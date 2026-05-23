@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Bússola Política Brasil</title>
+<style>
+/* ── RESET & BASE ── */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#080810;color:#e8e8f8;font-size:15px;line-height:1.5;overflow-x:hidden}
+
+/* ── COLORS ── */
+:root{
+  --r:#e63946;--r2:#ff6b6b;
+  --y:#ffd166;--y2:#ffb700;
+  --b:#1d6fa4;--b2:#48cae4;
+  --g:#06d6a0;--g2:#00f5c4;
+  --bg:#080810;--bg1:#0f0f1e;--bg2:#14142a;--bg3:#1a1a36;
+  --card:#1e1e38;--card2:#252545;
+  --brd:#2a2a50;--brd2:#3a3a60;
+  --txt:#e8e8f8;--muted:#7878a8;--dim:#4a4a78;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:2px}
+
+/* ── TOP NAV ── */
+.topnav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:rgba(8,8,16,.96);
+  border-bottom:1px solid var(--brd);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1rem;height:52px;
+}
+.nav-brand{
+  font-size:.95rem;font-weight:900;letter-spacing:.03em;
+  background:linear-gradient(90deg,var(--r),var(--y),var(--b2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.nav-tabs{display:flex;gap:0;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}
+.nav-tabs::-webkit-scrollbar{display:none}
+.ntab{
+  padding:.3rem .75rem;font-size:.72rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);background:transparent;border:none;
+  cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;
+  transition:all .15s;font-family:inherit;-webkit-tap-highlight-color:transparent;
+}
+.ntab:active{opacity:.7}
+.ntab.act{color:var(--y);border-bottom-color:var(--y)}
+
+/* ── SPECTRUM STRIPE ── */
+.stripe{height:3px;background:linear-gradient(to right,var(--r),var(--y),var(--b2));margin-top:52px}
+
+/* ── PAGE SYSTEM ── */
+.page{display:none;min-height:calc(100vh - 55px);padding-bottom:3rem}
+.page.show{display:block}
+
+/* ── HERO ── */
+.hero{
+  text-align:center;padding:3.5rem 1rem 2.5rem;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(230,57,70,.12) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 50% at 10% 80%,rgba(29,111,164,.1) 0%,transparent 60%),
+    var(--bg1);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:32px 32px;
+}
+.hero-inner{position:relative;z-index:1;max-width:680px;margin:0 auto}
+.hero-pill{
+  display:inline-block;
+  background:rgba(255,209,102,.1);border:1px solid rgba(255,209,102,.22);
+  border-radius:100px;padding:.28rem .9rem;
+  font-size:.65rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--y);margin-bottom:1.2rem;
+}
+.hero h1{
+  font-size:clamp(2.4rem,10vw,5.5rem);font-weight:900;line-height:.9;
+  margin-bottom:1.1rem;letter-spacing:-.01em;
+}
+.hr{color:var(--r)}.hw{color:var(--txt)}.hb{color:var(--b2)}
+.hero-sub{font-size:.9rem;color:var(--muted);max-width:420px;margin:0 auto 2rem;line-height:1.65}
+.hero-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:580px;margin:0 auto 1.5rem}
+.hcard{
+  background:var(--card);border:1px solid var(--brd);border-radius:10px;
+  padding:.9rem;cursor:pointer;transition:all .18s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.hcard:active{transform:scale(.95)}
+.hcard:hover{border-color:var(--y);transform:translateY(-2px)}
+.hcard-icon{font-size:1.6rem;margin-bottom:.3rem}
+.hcard-title{font-size:.78rem;font-weight:800;color:var(--txt)}
+.hcard-sub{font-size:.65rem;color:var(--muted);margin-top:.15rem}
+
+/* ── SECTION WRAPPER ── */
+.wrap{max-width:860px;margin:0 auto;padding:2rem 1rem}
+.sechead{margin-bottom:1.5rem}
+.eyebrow{
+  display:flex;align-items:center;gap:.4rem;
+  font-size:.62rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--y);margin-bottom:.4rem;
+}
+.eyebrow::before{content:'';width:12px;height:2px;background:var(--y);flex-shrink:0}
+h2{font-size:1.7rem;font-weight:900;line-height:1;margin-bottom:.3rem}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:1.2rem}
+h3{font-size:1.1rem;font-weight:800;margin-bottom:.6rem}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.65rem 1.3rem;border-radius:8px;
+  font-weight:800;font-size:.82rem;cursor:pointer;
+  border:2px solid transparent;text-decoration:none;
+  transition:all .16s;font-family:inherit;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.btn:active{transform:scale(.96)}
+.br{background:var(--r);color:#fff;border-color:var(--r)}
+.by{background:var(--y);color:#080810;border-color:var(--y)}
+.bg{background:var(--g);color:#080810;border-color:var(--g)}
+.bb{background:var(--b2);color:#080810;border-color:var(--b2)}
+.bo{background:transparent;color:var(--txt);border-color:var(--brd)}
+.btn-sm{padding:.42rem .9rem;font-size:.75rem}
+
+/* ══════════════════════════════
+   QUIZ POSICIONAMENTO
+══════════════════════════════ */
+.quiz-config{
+  background:var(--card);border:1px solid var(--brd);border-radius:14px;
+  padding:1.5rem;margin-bottom:1rem;
+}
+.config-title{font-size:.65rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+.cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.6rem;margin-bottom:1.2rem}
+.cat-btn{
+  padding:.55rem .8rem;border-radius:8px;border:2px solid var(--brd);
+  background:var(--bg2);cursor:pointer;font-size:.75rem;font-weight:700;
+  color:var(--muted);font-family:inherit;transition:all .16s;text-align:left;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  display:flex;align-items:center;gap:.5rem;
+}
+.cat-btn:active{transform:scale(.95)}
+.cat-btn.on{border-color:var(--y);color:var(--txt);background:rgba(255,209,102,.08)}
+.cat-icon{font-size:1.1rem;flex-shrink:0}
+.qty-row{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-bottom:1rem}
+.qty-label{font-size:.72rem;font-weight:700;color:var(--muted)}
+.qty-btn{
+  padding:.35rem .85rem;border-radius:100px;border:2px solid var(--brd);
+  background:transparent;font-size:.75rem;font-weight:800;color:var(--muted);
+  cursor:pointer;font-family:inherit;transition:all .16s;
+  -webkit-tap-highlight-color:transparent;
+}
+.qty-btn.on{background:var(--y);color:#080810;border-color:var(--y)}
+
+/* QUIZ SHELL */
+.qshell{background:var(--card);border:1px solid var(--brd);border-radius:14px;overflow:hidden}
+.qhead{
+  padding:1rem 1.2rem;
+  background:linear-gradient(135deg,rgba(230,57,70,.1),rgba(29,111,164,.08));
+  border-bottom:1px solid var(--brd);
+  display:flex;align-items:center;gap:.8rem;
+}
+.qnum-big{font-size:1.6rem;font-weight:900;color:var(--y);min-width:52px;line-height:1}
+.qpbar{height:5px;background:var(--brd);flex:1;border-radius:3px;overflow:hidden}
+.qpfill{height:100%;background:linear-gradient(to right,var(--r),var(--y),var(--b2));border-radius:3px;transition:width .3s}
+.qcat-badge{font-size:.6rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .6rem;border-radius:100px;background:var(--bg3);color:var(--muted)}
+.qbody{padding:1.3rem 1.2rem 1rem}
+.qtxt{font-size:1rem;font-weight:800;color:#fff;margin-bottom:1.5rem;line-height:1.45}
+
+/* LIKERT */
+.lk-labels{display:flex;justify-content:space-between;margin-bottom:.5rem}
+.lk-la{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);max-width:80px}
+.lk-la:first-child{color:var(--r)}.lk-la:last-child{text-align:right;color:var(--b2)}
+.lk-row{display:flex;justify-content:center;gap:7px;padding:.3rem 0}
+.lb{
+  width:50px;height:50px;border-radius:50%;border:2px solid var(--brd);
+  background:var(--bg2);cursor:pointer;font-size:.8rem;font-weight:900;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .15s,background .15s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.lb:active{transform:scale(.88) !important}
+.lb[data-v="1"].sel{background:#e63946;border-color:#e63946;color:#fff;transform:scale(1.18)}
+.lb[data-v="2"].sel{background:#c9642d;border-color:#c9642d;color:#fff;transform:scale(1.18)}
+.lb[data-v="3"].sel{background:#f4a261;border-color:#f4a261;color:#080810;transform:scale(1.18)}
+.lb[data-v="4"].sel{background:#2d88b8;border-color:#2d88b8;color:#fff;transform:scale(1.18)}
+.lb[data-v="5"].sel{background:#48cae4;border-color:#48cae4;color:#080810;transform:scale(1.18)}
+@media(max-width:360px){.lb{width:44px;height:44px}}
+
+.qnav{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1.2rem 1rem;border-top:1px solid var(--brd)}
+.qdots{display:flex;gap:3px;flex-wrap:wrap;max-width:200px}
+.qdot{width:7px;height:7px;border-radius:50%;background:var(--brd);flex-shrink:0}
+.qdot.done{background:var(--g)}.qdot.cur{background:var(--y);width:16px;border-radius:4px}
+
+/* RESULT */
+.rshell{display:none;background:var(--card);border:1px solid var(--brd);border-radius:14px;overflow:hidden}
+.rshell.show{display:block}
+.rtop{padding:2rem 1.2rem;text-align:center;background:linear-gradient(135deg,rgba(230,57,70,.09),rgba(29,111,164,.09));border-bottom:1px solid var(--brd)}
+.rbadge{display:inline-block;font-size:1.9rem;font-weight:900;padding:.35rem 1.8rem;border-radius:10px;margin:.5rem 0 .7rem;letter-spacing:.03em}
+.rmeter-wrap{display:flex;align-items:center;gap:.5rem;max-width:300px;margin:1rem auto 0}
+.rmtrack{flex:1;height:9px;border-radius:5px;background:linear-gradient(to right,var(--r),var(--y),var(--b2));position:relative}
+.rmpin{position:absolute;top:50%;transform:translate(-50%,-50%);width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--bg);box-shadow:0 2px 6px rgba(0,0,0,.5);transition:left .7s cubic-bezier(.34,1.56,.64,1)}
+.rbody{padding:1.2rem;display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+@media(max-width:400px){.rbody{grid-template-columns:1fr}}
+.ricard{background:var(--bg2);border:1px solid var(--brd);border-radius:8px;padding:.9rem}
+.ricard h4{font-size:.58rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+.ricard p{font-size:.82rem;font-weight:700;line-height:1.5}
+.rptags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.35rem}
+.rptag{padding:.14rem .52rem;border-radius:100px;font-size:.68rem;font-weight:700;background:var(--bg3);border:1px solid var(--brd)}
+.rfooter{padding:.9rem 1.2rem;border-top:1px solid var(--brd);display:flex;gap:.6rem;flex-wrap:wrap}
+
+/* ══════════════════════════════
+   QUIZ CONHECIMENTO
+══════════════════════════════ */
+.kconfig{background:var(--card);border:1px solid var(--brd);border-radius:14px;padding:1.5rem;margin-bottom:1rem}
+.kcats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.6rem;margin-bottom:1.2rem}
+.kshell{background:var(--card);border:1px solid var(--brd);border-radius:14px;overflow:hidden}
+.khead{padding:1rem 1.2rem;background:linear-gradient(135deg,rgba(255,209,102,.09),rgba(6,214,160,.09));border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:.8rem}
+.kscore-big{font-size:1.6rem;font-weight:900;color:var(--y);min-width:60px;line-height:1}
+.kbody{padding:1.3rem 1.2rem}
+.klbl{font-size:.62rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--g);margin-bottom:.55rem}
+.ktxt{font-size:.98rem;font-weight:800;color:#fff;margin-bottom:1rem;line-height:1.45}
+.kopts{display:grid;grid-template-columns:1fr;gap:.55rem;margin-bottom:.9rem}
+.kopt{
+  padding:.85rem 1rem;border-radius:10px;border:2px solid var(--brd);
+  background:var(--bg2);cursor:pointer;font-weight:700;font-size:.85rem;
+  color:var(--txt);font-family:inherit;text-align:left;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  transition:border-color .15s;line-height:1.3;
+}
+.kopt:active{transform:scale(.98)}
+.kopt:hover{border-color:var(--y)}
+.kopt.correct{background:rgba(6,214,160,.14);border-color:var(--g);color:var(--g)}
+.kopt.wrong{background:rgba(230,57,70,.14);border-color:var(--r);color:var(--r2)}
+.kopt.dis{pointer-events:none}
+.kdiff{display:inline-block;font-size:.58rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.13rem .5rem;border-radius:100px;margin-left:.4rem;vertical-align:middle}
+.df-easy{background:rgba(6,214,160,.15);color:var(--g)}
+.df-med{background:rgba(255,209,102,.15);color:var(--y)}
+.df-hard{background:rgba(230,57,70,.15);color:var(--r2)}
+.kfb{padding:.8rem .9rem;border-radius:8px;font-size:.82rem;font-weight:700;margin-bottom:.8rem;display:none;line-height:1.6}
+.kfb.show{display:block}
+.kfb.ok{background:rgba(6,214,160,.1);border:1px solid rgba(6,214,160,.28);color:#7ff0d8}
+.kfb.no{background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.28);color:var(--r2)}
+.knav{display:flex;justify-content:space-between;align-items:center}
+.kresult{display:none;text-align:center;padding:2.5rem 1.2rem}
+.kresult.show{display:block}
+.kbig{font-size:5rem;font-weight:900;color:var(--y);line-height:1}
+.kresult-sub{font-size:.82rem;color:var(--muted);margin:.3rem 0 .8rem}
+.kresult-msg{font-size:.92rem;font-weight:800;margin:0 auto 1.6rem;max-width:340px}
+.k-breakdown{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:1rem;margin:1rem auto;max-width:400px;text-align:left}
+.k-breakdown h4{font-size:.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
+.k-cat-row{display:flex;justify-content:space-between;align-items:center;padding:.35rem 0;border-bottom:1px solid var(--brd);font-size:.8rem}
+.k-cat-row:last-child{border-bottom:none}
+
+/* ══════════════════════════════
+   CONTEÚDO — ESPECTRO, PARTIDOS, ETC
+══════════════════════════════ */
+/* TABS inside content pages */
+.ctabs{display:flex;gap:0;border-bottom:1px solid var(--brd);margin-bottom:1.5rem;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}
+.ctabs::-webkit-scrollbar{display:none}
+.ctab{
+  padding:.6rem 1.1rem;font-size:.75rem;font-weight:800;
+  cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);
+  white-space:nowrap;transition:all .15s;
+  -webkit-tap-highlight-color:transparent;background:transparent;border-top:none;border-left:none;border-right:none;
+  font-family:inherit;
+}
+.ctab:active{opacity:.7}
+.ctab.act{color:var(--y);border-bottom-color:var(--y)}
+.ctpane{display:none}.ctpane.show{display:block}
+
+/* ESPECTRO CARDS */
+.esp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.2rem}
+@media(max-width:480px){.esp-grid{grid-template-columns:1fr}}
+.esp-card{background:var(--card);border:1px solid var(--brd);border-radius:12px;padding:1.2rem;transition:transform .16s}
+.esp-card:hover{transform:translateY(-3px)}
+.esp-e{border-top:4px solid var(--r)}.esp-c{border-top:4px solid var(--y)}.esp-d{border-top:4px solid var(--b2)}
+.esp-icon{font-size:1.7rem;margin-bottom:.5rem}
+.esp-card h3{font-size:1rem;font-weight:900;margin-bottom:.4rem}
+.esp-e h3{color:var(--r)}.esp-c h3{color:var(--y)}.esp-d h3{color:var(--b2)}
+.esp-card p{font-size:.78rem;color:var(--muted);line-height:1.6}
+.esp-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.7rem}
+.esp-tag{padding:.14rem .48rem;border-radius:100px;font-size:.63rem;font-weight:700}
+.esp-e .esp-tag{background:rgba(230,57,70,.13);color:var(--r)}
+.esp-c .esp-tag{background:rgba(255,209,102,.13);color:var(--y)}
+.esp-d .esp-tag{background:rgba(72,202,228,.13);color:var(--b2)}
+
+/* PARTIDOS */
+.pfilt{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+.pft{
+  padding:.32rem .8rem;border-radius:100px;font-size:.72rem;font-weight:700;
+  cursor:pointer;border:2px solid var(--brd);background:transparent;color:var(--muted);
+  font-family:inherit;-webkit-tap-highlight-color:transparent;transition:all .15s;
+}
+.pft:active{opacity:.7}
+.pft.aa{background:var(--txt);color:var(--bg);border-color:var(--txt)}
+.pft.ae{background:var(--r);color:#fff;border-color:var(--r)}
+.pft.ac{background:var(--y);color:var(--bg);border-color:var(--y)}
+.pft.ad{background:var(--b2);color:var(--bg);border-color:var(--b2)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:.75rem}
+.pcard{
+  background:var(--card);border:1px solid var(--brd);border-radius:10px;
+  padding:.9rem;cursor:pointer;transition:all .16s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.pcard:active{transform:scale(.95)}
+.pcard:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.pcard.pe{border-top:3px solid var(--r)}.pcard.pc{border-top:3px solid var(--y)}.pcard.pd{border-top:3px solid var(--b2)}
+.psigla{font-size:1.5rem;font-weight:900;margin-bottom:.1rem}
+.pe .psigla{color:var(--r)}.pc .psigla{color:var(--y)}.pd .psigla{color:var(--b2)}
+.pnome{font-size:.68rem;color:var(--muted);line-height:1.3}
+.pesp{display:inline-block;margin-top:.45rem;font-size:.58rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:.12rem .45rem;border-radius:100px}
+.pe .pesp{background:rgba(230,57,70,.13);color:var(--r)}
+.pc .pesp{background:rgba(255,209,102,.13);color:var(--y)}
+.pd .pesp{background:rgba(72,202,228,.13);color:var(--b2)}
+
+/* ELEIÇÕES TIMELINE */
+.etl{position:relative;padding-left:2rem}
+.etl::before{content:'';position:absolute;left:.6rem;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--r),var(--b2))}
+.eitem{position:relative;margin-bottom:1rem}
+.edot{position:absolute;left:-2rem;top:.5rem;width:12px;height:12px;border-radius:50%;border:2px solid var(--bg)}
+.ecard{
+  background:var(--card);border:1px solid var(--brd);border-radius:10px;
+  padding:1rem 1.1rem;cursor:pointer;transition:all .16s;
+  -webkit-tap-highlight-color:transparent;
+}
+.eitem:active .ecard{opacity:.75}
+.eitem:hover .ecard{border-color:rgba(255,209,102,.3);transform:translateX(3px)}
+.etop{display:flex;align-items:center;gap:.7rem;margin-bottom:.3rem;flex-wrap:wrap}
+.eano{font-size:1.3rem;font-weight:900;color:var(--y);line-height:1}
+.etit{font-weight:800;font-size:.88rem}
+.edesc{font-size:.78rem;color:var(--muted);line-height:1.6}
+.etag{display:inline-block;margin-top:.4rem;font-size:.62rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:.14rem .55rem;border-radius:100px}
+.estat{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-top:.7rem;
+}
+.estat-item{background:var(--bg3);border-radius:6px;padding:.5rem;text-align:center}
+.estat-val{font-size:.85rem;font-weight:900;color:var(--y)}
+.estat-lbl{font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* PROJETOS */
+.ptabs-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+.ptab-btn{
+  padding:.38rem 1rem;border-radius:100px;font-size:.75rem;font-weight:800;
+  cursor:pointer;border:2px solid var(--brd);background:transparent;color:var(--muted);
+  font-family:inherit;-webkit-tap-highlight-color:transparent;transition:all .15s;
+}
+.ptab-btn:active{opacity:.7}
+.ptab-btn.te{background:var(--r);color:#fff;border-color:var(--r)}
+.ptab-btn.tc{background:var(--y);color:var(--bg);border-color:var(--y)}
+.ptab-btn.td{background:var(--b2);color:var(--bg);border-color:var(--b2)}
+.ppane{display:none}.ppane.show{display:block}
+.prjcard{
+  background:var(--card);border:1px solid var(--brd);border-radius:10px;
+  padding:1rem 1.1rem;margin-bottom:.75rem;border-left:4px solid transparent;
+  transition:border-color .15s;
+}
+.prjcard:hover{border-color:rgba(255,209,102,.3)}
+.ppe .prjcard{border-left-color:var(--r)}.ppc .prjcard{border-left-color:var(--y)}.ppd .prjcard{border-left-color:var(--b2)}
+.prjtit{font-weight:800;margin-bottom:.22rem;font-size:.9rem}
+.prjdesc{font-size:.78rem;color:var(--muted);line-height:1.6}
+.prjst{display:inline-block;margin-top:.35rem;font-size:.6rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;padding:.13rem .48rem;border-radius:100px}
+.stok{background:rgba(6,214,160,.13);color:var(--g)}
+.stpol{background:rgba(255,209,102,.1);color:var(--y)}
+.stpar{background:rgba(72,202,228,.1);color:var(--b2)}
+.strv{background:rgba(120,120,168,.12);color:var(--muted)}
+
+/* ECONOMIA CARDS */
+.eco-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.9rem;margin-bottom:1.5rem}
+.eco-card{background:var(--card);border:1px solid var(--brd);border-radius:10px;padding:1.1rem}
+.eco-period{font-size:.6rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+.eco-gov{font-size:.82rem;font-weight:800;color:var(--txt);margin-bottom:.5rem}
+.eco-stat{margin-bottom:.3rem}
+.eco-stat-val{font-size:1.1rem;font-weight:900}
+.eco-stat-lbl{font-size:.62rem;color:var(--muted)}
+.eco-up{color:var(--g)}.eco-down{color:var(--r2)}.eco-neutral{color:var(--y)}
+
+/* PROPOSTAS */
+.propgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+@media(max-width:500px){.propgrid{grid-template-columns:1fr}}
+.propcard{background:var(--card);border:1px solid var(--brd);border-radius:12px;padding:1.2rem}
+.propcard.ppe{border-top:4px solid var(--r)}.propcard.ppc{border-top:4px solid var(--y)}.propcard.ppd{border-top:4px solid var(--b2)}
+.propcard h3{font-size:.92rem;font-weight:900;margin-bottom:.8rem}
+.ppe h3{color:var(--r)}.ppc h3{color:var(--y)}.ppd h3{color:var(--b2)}
+.propcard ul{list-style:none;padding:0}
+.propcard li{font-size:.76rem;color:var(--muted);padding:.3rem 0;border-bottom:1px solid var(--brd);display:flex;gap:.4rem;line-height:1.4}
+.propcard li:last-child{border-bottom:none}
+.propcard li::before{content:'▸';flex-shrink:0;font-size:.6rem;margin-top:.18rem}
+.ppe li::before{color:var(--r)}.ppc li::before{color:var(--y)}.ppd li::before{color:var(--b2)}
+
+/* LEIS */
+.lei-item{background:var(--card);border:1px solid var(--brd);border-radius:10px;padding:1rem 1.1rem;margin-bottom:.75rem;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.lei-item:active{opacity:.7}
+.lei-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem}
+.lei-num{font-size:.6rem;font-weight:800;color:var(--y);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.2rem}
+.lei-titulo{font-weight:800;font-size:.88rem;line-height:1.3}
+.lei-badge{font-size:.58rem;font-weight:800;padding:.13rem .48rem;border-radius:100px;white-space:nowrap;flex-shrink:0}
+.lb-esq{background:rgba(230,57,70,.13);color:var(--r)}
+.lb-cen{background:rgba(255,209,102,.13);color:var(--y)}
+.lb-dir{background:rgba(72,202,228,.13);color:var(--b2)}
+.lei-desc{font-size:.78rem;color:var(--muted);line-height:1.6;margin-top:.4rem;display:none}
+.lei-desc.show{display:block}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.82);align-items:center;justify-content:center;padding:1rem}
+.modal.show{display:flex}
+.mbox{
+  background:var(--card);border:1px solid var(--brd);border-radius:14px;
+  max-width:480px;width:100%;padding:1.4rem;
+  max-height:84vh;overflow-y:auto;position:relative;
+}
+.mcls{
+  position:absolute;top:.8rem;right:.8rem;width:28px;height:28px;
+  border-radius:50%;background:var(--bg3);border:1px solid var(--brd);
+  cursor:pointer;color:var(--muted);font-size:.82rem;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent;
+}
+.mbox h3{font-size:1.2rem;font-weight:900;margin-bottom:.7rem;padding-right:2.2rem;line-height:1.3}
+.mbox p{font-size:.85rem;color:var(--muted);margin-bottom:.7rem;line-height:1.6}
+.mbox ul{list-style:none;padding:0}
+.mbox li{font-size:.82rem;padding:.4rem 0;border-bottom:1px solid var(--brd);display:flex;gap:.4rem;align-items:flex-start;line-height:1.4}
+.mbox li:last-child{border-bottom:none}
+.mbox li::before{content:'✦';color:var(--y);font-size:.5rem;flex-shrink:0;margin-top:.2rem}
+.m-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:1rem 0}
+.m-stat{background:var(--bg2);border-radius:6px;padding:.6rem;text-align:center}
+.m-stat-val{font-size:.95rem;font-weight:900;color:var(--y)}
+.m-stat-lbl{font-size:.58rem;color:var(--muted);text-transform:uppercase}
+
+/* NOTA BOX */
+.nota{background:rgba(255,209,102,.06);border:1px solid rgba(255,209,102,.18);border-radius:8px;padding:.7rem .9rem;font-size:.78rem;color:var(--muted);margin-top:1rem}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--brd);text-align:center;padding:2rem 1rem;color:var(--muted);font-size:.73rem}
+.flogo{font-size:1.2rem;font-weight:900;margin-bottom:.3rem;background:linear-gradient(90deg,var(--r),var(--y),var(--b2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* ANIMATE */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .4s ease both}
+@keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.pop{animation:pop .35s cubic-bezier(.34,1.56,.64,1)}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="nav-brand">🧭 Bússola BR</div>
+  <div class="nav-tabs">
+    <button class="ntab act" onclick="goPage('home',this)">Início</button>
+    <button class="ntab" onclick="goPage('quiz',this)">Quiz</button>
+    <button class="ntab" onclick="goPage('konw',this)">Conhecimento</button>
+    <button class="ntab" onclick="goPage('conteudo',this)">Conteúdo</button>
+    <button class="ntab" onclick="goPage('eleicoes',this)">Eleições</button>
+    <button class="ntab" onclick="goPage('leis',this)">Leis</button>
+    <button class="ntab" onclick="goPage('economia',this)">Economia</button>
+  </div>
+</nav>
+<div class="stripe"></div>
+
+<!-- ════════════════ HOME ════════════════ -->
+<div id="page-home" class="page show">
+  <div class="hero">
+    <div class="hero-inner fade-up">
+      <div class="hero-pill">🇧🇷 Educação Política · Brasil</div>
+      <h1><span class="hr">ESQUERDA</span><br><span class="hw">CENTRO</span><br><span class="hb">DIREITA</span></h1>
+      <p class="hero-sub">Descubra seu posicionamento, teste conhecimentos reais e entenda a política brasileira em profundidade.</p>
+      <div class="hero-cards">
+        <div class="hcard" onclick="goPageBtn('quiz')">
+          <div class="hcard-icon">🎯</div>
+          <div class="hcard-title">Quiz Político</div>
+          <div class="hcard-sub">Onde você está?</div>
+        </div>
+        <div class="hcard" onclick="goPageBtn('konw')">
+          <div class="hcard-icon">🧠</div>
+          <div class="hcard-title">Conhecimento</div>
+          <div class="hcard-sub">Você sabe de fato?</div>
+        </div>
+        <div class="hcard" onclick="goPageBtn('conteudo')">
+          <div class="hcard-icon">📚</div>
+          <div class="hcard-title">Conteúdo</div>
+          <div class="hcard-sub">Partidos e projetos</div>
+        </div>
+        <div class="hcard" onclick="goPageBtn('eleicoes')">
+          <div class="hcard-icon">🗳️</div>
+          <div class="hcard-title">Eleições</div>
+          <div class="hcard-sub">2002 – 2026</div>
+        </div>
+        <div class="hcard" onclick="goPageBtn('leis')">
+          <div class="hcard-icon">⚖️</div>
+          <div class="hcard-title">Leis</div>
+          <div class="hcard-sub">Legislação política</div>
+        </div>
+        <div class="hcard" onclick="goPageBtn('economia')">
+          <div class="hcard-icon">📊</div>
+          <div class="hcard-title">Economia</div>
+          <div class="hcard-sub">PIB, emprego, renda</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ QUIZ POSICIONAMENTO ════════════════ -->
+<div id="page-quiz" class="page">
+<div class="wrap">
+  <div class="sechead">
+    <div class="eyebrow">Autoconhecimento</div>
+    <h2>Onde você está no espectro?</h2>
+    <p class="sub">Escolha os temas e quantas perguntas quer responder.</p>
+  </div>
+
+  <div class="quiz-config" id="qconfig">
+    <div class="config-title">1. Escolha os temas</div>
+    <div class="cats-grid" id="qcats-grid"></div>
+    <div class="config-title">2. Quantas perguntas?</div>
+    <div class="qty-row">
+      <span class="qty-label">Quantidade:</span>
+      <button class="qty-btn on" data-q="10" onclick="setQty(this)">10</button>
+      <button class="qty-btn" data-q="20" onclick="setQty(this)">20</button>
+      <button class="qty-btn" data-q="30" onclick="setQty(this)">30</button>
+      <button class="qty-btn" data-q="0" onclick="setQty(this)">Todas</button>
+    </div>
+    <button class="btn br" onclick="startQuiz()">Iniciar Quiz →</button>
+  </div>
+
+  <div class="qshell" id="qshell" style="display:none">
+    <div class="qhead">
+      <div class="qnum-big" id="qnum">1/10</div>
+      <div class="qpbar"><div class="qpfill" id="qpf" style="width:10%"></div></div>
+      <span class="qcat-badge" id="qcatbadge">—</span>
+    </div>
+    <div class="qbody">
+      <div class="qtxt" id="qtxt"></div>
+      <div class="lk-labels">
+        <span class="lk-la">Discordo totalmente</span>
+        <span class="lk-la" style="text-align:right">Concordo totalmente</span>
+      </div>
+      <div class="lk-row" id="lkrow"></div>
+    </div>
+    <div class="qnav">
+      <button class="btn bo btn-sm" id="qprev" onclick="qPrev()">← Voltar</button>
+      <div class="qdots" id="qdots"></div>
+      <button class="btn br btn-sm" id="qnext" onclick="qNext()">Próximo →</button>
+    </div>
+  </div>
+
+  <div class="rshell" id="rshell">
+    <div class="rtop">
+      <div style="font-size:.58rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem">Seu posicionamento</div>
+      <div class="rbadge" id="rbadge">—</div>
+      <p id="rdesc" style="color:var(--muted);font-size:.82rem;max-width:360px;margin:.5rem auto 0"></p>
+      <div class="rmeter-wrap">
+        <span style="font-size:.6rem;color:var(--r);font-weight:800">ESQ</span>
+        <div class="rmtrack"><div class="rmpin" id="rmpin" style="left:50%"></div></div>
+        <span style="font-size:.6rem;color:var(--b2);font-weight:800">DIR</span>
+      </div>
+    </div>
+    <div class="rbody">
+      <div class="ricard"><h4>Características</h4><p id="rcarac"></p></div>
+      <div class="ricard"><h4>Partidos próximos</h4><div class="rptags" id="rptags"></div></div>
+    </div>
+    <div class="rfooter">
+      <button class="btn bo btn-sm" onclick="resetQuiz()">↺ Refazer</button>
+      <button class="btn by btn-sm" onclick="goPageBtn('konw')">🧠 Testar conhecimento →</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════ QUIZ CONHECIMENTO ════════════════ -->
+<div id="page-konw" class="page">
+<div class="wrap">
+  <div class="sechead">
+    <div class="eyebrow">Teste seus Conhecimentos</div>
+    <h2>Quem fez o quê?</h2>
+    <p class="sub">Questões sobre projetos, leis, economia e eleições. Escolha a dificuldade.</p>
+  </div>
+
+  <div class="kconfig" id="kconfig">
+    <div class="config-title">1. Categorias</div>
+    <div class="kcats-grid" id="kcats-grid"></div>
+    <div class="config-title">2. Dificuldade</div>
+    <div class="qty-row" style="margin-bottom:.8rem">
+      <button class="qty-btn on" data-d="all" onclick="setKDiff(this)">Todas</button>
+      <button class="qty-btn" data-d="easy" onclick="setKDiff(this)">Fácil</button>
+      <button class="qty-btn" data-d="med" onclick="setKDiff(this)">Médio</button>
+      <button class="qty-btn" data-d="hard" onclick="setKDiff(this)">Difícil</button>
+    </div>
+    <div class="config-title">3. Quantidade</div>
+    <div class="qty-row">
+      <button class="qty-btn on" data-q="10" onclick="setKQty(this)">10</button>
+      <button class="qty-btn" data-q="20" onclick="setKQty(this)">20</button>
+      <button class="qty-btn" data-q="30" onclick="setKQty(this)">30</button>
+      <button class="qty-btn" data-q="0" onclick="setKQty(this)">Todas</button>
+    </div>
+    <br>
+    <button class="btn by" onclick="startKonw()">Iniciar →</button>
+  </div>
+
+  <div class="kshell" id="kshell" style="display:none">
+    <div class="khead">
+      <div class="kscore-big" id="kscore">0 pts</div>
+      <div style="flex:1">
+        <div style="font-size:.6rem;color:var(--muted);font-weight:700;margin-bottom:.28rem">PLACAR</div>
+        <div style="height:4px;background:var(--brd);border-radius:2px;overflow:hidden"><div id="kbar" style="height:100%;width:0%;background:linear-gradient(to right,var(--g),var(--y));border-radius:2px;transition:width .3s"></div></div>
+      </div>
+      <div style="font-size:.68rem;color:var(--muted);font-weight:700" id="kprog">1/10</div>
+    </div>
+    <div class="kbody">
+      <div class="klbl" id="klbl">Questão 1</div>
+      <div class="ktxt" id="ktxt"></div>
+      <div class="kopts" id="kopts"></div>
+      <div class="kfb" id="kfb"></div>
+      <div class="knav">
+        <div style="font-size:.7rem;color:var(--muted)" id="kstatus">Selecione uma opção</div>
+        <button class="btn bg btn-sm" id="knext" onclick="kNext()" style="display:none">Próxima →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="kresult" id="kresult">
+    <div class="kbig" id="kfinal">0</div>
+    <div class="kresult-sub" id="kresult-sub">de 10 pontos</div>
+    <div class="kresult-msg" id="kmsg"></div>
+    <div class="k-breakdown" id="kbreakdown"></div>
+    <button class="btn by" onclick="resetKonw()">↺ Jogar novamente</button>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════ CONTEÚDO ════════════════ -->
+<div id="page-conteudo" class="page">
+<div class="wrap">
+  <div class="sechead">
+    <div class="eyebrow">Educação Política</div>
+    <h2>Conteúdo</h2>
+  </div>
+  <div class="ctabs">
+    <button class="ctab act" onclick="showCTab('espectro',this)">Espectro</button>
+    <button class="ctab" onclick="showCTab('partidos',this)">Partidos</button>
+    <button class="ctab" onclick="showCTab('projetos',this)">Projetos</button>
+    <button class="ctab" onclick="showCTab('propostas',this)">Propostas</button>
+    <button class="ctab" onclick="showCTab('agro',this)">Agronegócio</button>
+  </div>
+
+  <!-- ESPECTRO -->
+  <div class="ctpane show" id="ct-espectro">
+    <div class="esp-grid">
+      <div class="esp-card esp-e">
+        <div class="esp-icon">🔴</div><h3>Esquerda</h3>
+        <p>Defende igualdade social, Estado ativo, redistribuição de renda, proteção de minorias e políticas públicas universais. Historicamente ligada a movimentos sindicais e sociais.</p>
+        <div class="esp-tags"><span class="esp-tag">Redistribuição</span><span class="esp-tag">Estado ativo</span><span class="esp-tag">Direitos sociais</span><span class="esp-tag">Progressismo</span><span class="esp-tag">Sindicalismo</span></div>
+      </div>
+      <div class="esp-card esp-c">
+        <div class="esp-icon">🟡</div><h3>Centro</h3>
+        <p>Busca equilíbrio entre mercado e Estado, pragmatismo, diálogo e reformas graduais. Evita extremos e prioriza governabilidade e estabilidade fiscal.</p>
+        <div class="esp-tags"><span class="esp-tag">Pragmatismo</span><span class="esp-tag">Equilíbrio</span><span class="esp-tag">Diálogo</span><span class="esp-tag">Reformismo</span><span class="esp-tag">Fiscal</span></div>
+      </div>
+      <div class="esp-card esp-d">
+        <div class="esp-icon">🔵</div><h3>Direita</h3>
+        <p>Prioriza liberdade econômica, livre mercado, segurança, valores tradicionais, propriedade privada e mínima intervenção estatal na economia.</p>
+        <div class="esp-tags"><span class="esp-tag">Livre mercado</span><span class="esp-tag">Meritocracia</span><span class="esp-tag">Tradição</span><span class="esp-tag">Privatizações</span><span class="esp-tag">Segurança</span></div>
+      </div>
+    </div>
+    <div class="nota">⚠️ <strong style="color:var(--y)">Nota:</strong> O espectro é uma simplificação. Posições reais são complexas e variam por tema.</div>
+  </div>
+
+  <!-- PARTIDOS -->
+  <div class="ctpane" id="ct-partidos">
+    <div class="pfilt">
+      <button class="pft aa" onclick="filtP('all',this)">Todos</button>
+      <button class="pft" onclick="filtP('esq',this)">🔴 Esquerda</button>
+      <button class="pft" onclick="filtP('centro',this)">🟡 Centro</button>
+      <button class="pft" onclick="filtP('dir',this)">🔵 Direita</button>
+    </div>
+    <div class="pgrid" id="pgrid"></div>
+  </div>
+
+  <!-- PROJETOS -->
+  <div class="ctpane" id="ct-projetos">
+    <div class="ptabs-row">
+      <button class="ptab-btn te" id="pt-esq" onclick="showPT('esq')">🔴 Esquerda</button>
+      <button class="ptab-btn" id="pt-centro" onclick="showPT('centro')">🟡 Centro</button>
+      <button class="ptab-btn" id="pt-dir" onclick="showPT('dir')">🔵 Direita</button>
+    </div>
+    <div id="pp-esq" class="ppane ppe show"></div>
+    <div id="pp-centro" class="ppane ppc"></div>
+    <div id="pp-dir" class="ppane ppd"></div>
+  </div>
+
+  <!-- PROPOSTAS -->
+  <div class="ctpane" id="ct-propostas">
+    <div class="propgrid">
+      <div class="propcard ppe">
+        <h3>Campo Progressista</h3>
+        <ul>
+          <li>Taxação progressiva de grandes fortunas</li>
+          <li>Fortalecimento universal do SUS</li>
+          <li>Educação pública e gratuita em todos os níveis</li>
+          <li>Reforma agrária e regularização fundiária</li>
+          <li>Transição energética e empregos verdes</li>
+          <li>Proteção de territórios indígenas</li>
+          <li>Habitação popular — MCMV ampliado</li>
+          <li>Salário mínimo acima da inflação + crescimento</li>
+          <li>Desarmamento civil</li>
+          <li>Cotas e políticas afirmativas</li>
+        </ul>
+      </div>
+      <div class="propcard ppc">
+        <h3>Campo Centro</h3>
+        <ul>
+          <li>Equilíbrio fiscal com investimento público</li>
+          <li>PPPs em saúde, educação e saneamento</li>
+          <li>Modernização trabalhista com proteção mínima</li>
+          <li>Marco regulatório para inovação e startups</li>
+          <li>Descentralização e municipalismo</li>
+          <li>Reforma política e combate à corrupção</li>
+          <li>Agricultura familiar + agronegócio regulado</li>
+          <li>Educação técnica e profissionalizante</li>
+          <li>Reforma tributária simplificadora</li>
+          <li>Segurança com inteligência e polícia técnica</li>
+        </ul>
+      </div>
+      <div class="propcard ppd">
+        <h3>Campo Conservador</h3>
+        <ul>
+          <li>Privatizações e concessões de estatais</li>
+          <li>Estado enxuto e menos burocracia</li>
+          <li>Desregulamentação econômica</li>
+          <li>Endurecimento penal e presídios</li>
+          <li>Valores tradicionais e família</li>
+          <li>Banco Central autônomo</li>
+          <li>Armamento legal para cidadãos</li>
+          <li>Menos impostos para empresas</li>
+          <li>Liberdade de ensino domiciliar</li>
+          <li>Proteção à propriedade rural</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- AGRONEGÓCIO -->
+  <div class="ctpane" id="ct-agro">
+    <div class="ctabs" style="margin-bottom:1.2rem">
+      <button class="ctab act" onclick="showAgroTab('visao',this)">Visões</button>
+      <button class="ctab" onclick="showAgroTab('dados',this)">Dados</button>
+      <button class="ctab" onclick="showAgroTab('leis',this)">Legislação</button>
+    </div>
+    <div class="ctpane show" id="at-visao">
+      <div class="esp-grid">
+        <div class="esp-card esp-e">
+          <div class="esp-icon">🌿</div><h3>Esquerda e Agro</h3>
+          <p>Defende reforma agrária, agricultura familiar e assentamentos. Critica concentração de terras e monocultura. Apoia o MST. Prioriza segurança alimentar sobre exportações.</p>
+          <div class="esp-tags"><span class="esp-tag">Reforma agrária</span><span class="esp-tag">Família</span><span class="esp-tag">MST</span><span class="esp-tag">Segurança alimentar</span></div>
+        </div>
+        <div class="esp-card esp-c">
+          <div class="esp-icon">🌾</div><h3>Centro e Agro</h3>
+          <p>Busca equilíbrio entre agronegócio exportador e agricultura familiar. Apoia crédito rural, Embrapa e regularização ambiental. Defende coexistência de modelos.</p>
+          <div class="esp-tags"><span class="esp-tag">Crédito rural</span><span class="esp-tag">Embrapa</span><span class="esp-tag">Regularização</span><span class="esp-tag">Exportação</span></div>
+        </div>
+        <div class="esp-card esp-d">
+          <div class="esp-icon">🚜</div><h3>Direita e Agro</h3>
+          <p>Forte defensor do agronegócio como motor da economia. Apoia flexibilização do Código Florestal, expansão da fronteira agrícola e proteção à propriedade rural privada.</p>
+          <div class="esp-tags"><span class="esp-tag">Propriedade</span><span class="esp-tag">Exportação</span><span class="esp-tag">Bancada ruralista</span><span class="esp-tag">CAR</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ctpane" id="at-dados">
+      <div class="eco-grid">
+        <div class="eco-card"><div class="eco-period">Participação no PIB</div><div class="eco-gov" style="color:var(--y)">Agronegócio</div><div class="eco-stat"><div class="eco-stat-val eco-up">27,4%</div><div class="eco-stat-lbl">do PIB em 2023</div></div></div>
+        <div class="eco-card"><div class="eco-period">Exportações</div><div class="eco-gov" style="color:var(--y)">Commodities</div><div class="eco-stat"><div class="eco-stat-val eco-up">50%+</div><div class="eco-stat-lbl">das exportações totais</div></div></div>
+        <div class="eco-card"><div class="eco-period">Empregos</div><div class="eco-gov" style="color:var(--y)">Setor rural</div><div class="eco-stat"><div class="eco-stat-val eco-neutral">33 mi</div><div class="eco-stat-lbl">empregos diretos/indiretos</div></div></div>
+        <div class="eco-card"><div class="eco-period">Soja</div><div class="eco-gov" style="color:var(--y)">Maior produtor</div><div class="eco-stat"><div class="eco-stat-val eco-up">1º</div><div class="eco-stat-lbl">do mundo desde 2022</div></div></div>
+        <div class="eco-card"><div class="eco-period">Agric. Familiar</div><div class="eco-gov" style="color:var(--y)">Alimentação</div><div class="eco-stat"><div class="eco-stat-val eco-up">70%</div><div class="eco-stat-lbl">dos alimentos consumidos</div></div></div>
+        <div class="eco-card"><div class="eco-period">Desmatamento</div><div class="eco-gov" style="color:var(--r2)">Amazônia 2023</div><div class="eco-stat"><div class="eco-stat-val eco-down">-50%</div><div class="eco-stat-lbl">vs 2022 (redução)</div></div></div>
+      </div>
+    </div>
+    <div class="ctpane" id="at-leis">
+      <div class="lei-item" onclick="toggleLei(this)"><div class="lei-top"><div><div class="lei-num">Lei 12.651/2012</div><div class="lei-titulo">Código Florestal</div></div><span class="lei-badge lb-dir">Direita</span></div><div class="lei-desc">Aprovado no governo Dilma mas com forte pressão ruralista. Reduziu áreas de preservação permanente e anistiou multas de desmatadores. Muito contestado por ambientalistas.</div></div>
+      <div class="lei-item" onclick="toggleLei(this)"><div class="lei-top"><div><div class="lei-num">Lei 11.326/2006</div><div class="lei-titulo">Agricultura Familiar (PRONAF)</div></div><span class="lei-badge lb-esq">Esquerda</span></div><div class="lei-desc">Definiu agricultura familiar e criou base legal para políticas como o PRONAF (crédito). Governo Lula 1. Fundamenta programas de compra de alimentos da agricultura familiar.</div></div>
+      <div class="lei-item" onclick="toggleLei(this)"><div class="lei-top"><div><div class="lei-num">EC 96/2017</div><div class="lei-titulo">Vaquejada e práticas culturais</div></div><span class="lei-badge lb-dir">Direita</span></div><div class="lei-desc">Emenda constitucional que protegeu vaquejada e outras manifestações culturais que envolvem animais, após STF considerar a prática cruel. Apoiada pela bancada ruralista e conservadora.</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════ ELEIÇÕES ════════════════ -->
+<div id="page-eleicoes" class="page">
+<div class="wrap">
+  <div class="sechead">
+    <div class="eyebrow">História Política</div>
+    <h2>Eleições presidenciais</h2>
+    <p class="sub">2002 – 2022 · Toque em cada eleição para ver dados detalhados.</p>
+  </div>
+  <div class="etl" id="etl"></div>
+  <div class="nota" style="margin-top:1rem">📅 <strong style="color:var(--y)">2026:</strong> Próximas eleições presidenciais. PT, PL e MDB já começam articulações.</div>
+</div>
+</div>
+
+<!-- ════════════════ LEIS ════════════════ -->
+<div id="page-leis" class="page">
+<div class="wrap">
+  <div class="sechead">
+    <div class="eyebrow">Legislação</div>
+    <h2>Leis importantes</h2>
+    <p class="sub">Principais leis por tema. Toque para expandir.</p>
+  </div>
+  <div class="ctabs">
+    <button class="ctab act" onclick="showLTab('trabalhista',this)">Trabalhista</button>
+    <button class="ctab" onclick="showLTab('social',this)">Social</button>
+    <button class="ctab" onclick="showLTab('economica',this)">Econômica</button>
+    <button class="ctab" onclick="showLTab('ambiental',this)">Ambiental</button>
+    <button class="ctab" onclick="showLTab('seguranca',this)">Segurança</button>
+  </div>
+  <div id="lt-trabalhista" class="ctpane show"></div>
+  <div id="lt-social" class="ctpane"></div>
+  <div id="lt-economica" class="ctpane"></div>
+  <div id="lt-ambiental" class="ctpane"></div>
+  <div id="lt-seguranca" class="ctpane"></div>
+</div>
+</div>
+
+<!-- ════════════════ ECONOMIA ════════════════ -->
+<div id="page-economia" class="page">
+<div class="wrap">
+  <div class="sechead">
+    <div class="eyebrow">Dados Econômicos</div>
+    <h2>Economia por governo</h2>
+    <p class="sub">PIB, emprego, salário mínimo e renda por período presidencial.</p>
+  </div>
+  <div class="ctabs">
+    <button class="ctab act" onclick="showEcoTab('pib',this)">PIB</button>
+    <button class="ctab" onclick="showEcoTab('emprego',this)">Emprego</button>
+    <button class="ctab" onclick="showEcoTab('renda',this)">Renda</button>
+    <button class="ctab" onclick="showEcoTab('salmin',this)">Salário mínimo</button>
+    <button class="ctab" onclick="showEcoTab('inflacao',this)">Inflação</button>
+  </div>
+  <div id="et-pib" class="ctpane show"></div>
+  <div id="et-emprego" class="ctpane"></div>
+  <div id="et-renda" class="ctpane"></div>
+  <div id="et-salmin" class="ctpane"></div>
+  <div id="et-inflacao" class="ctpane"></div>
+</div>
+</div>
+
+<footer>
+  <div class="flogo">🧭 Bússola Política Brasil</div>
+  <p>Conteúdo educativo, apartidário e imparcial · Baseado em fontes públicas e dados oficiais</p>
+  <p style="margin-top:.3rem;font-size:.65rem">Não faz propaganda partidária nem incentiva voto em candidatos.</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="if(event.target.id==='modal')mClose()">
+  <div class="mbox">
+    <button class="mcls" onclick="mClose()">✕</button>
+    <h3 id="mtit"></h3>
+    <div id="mbdy"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════════════════
+
+var QCATS = [
+  {id:'social',    label:'Social',        icon:'🏥', desc:'Saúde, educação, habitação'},
+  {id:'economia',  label:'Economia',      icon:'💰', desc:'PIB, emprego, mercado'},
+  {id:'trabalho',  label:'Trabalho',      icon:'🔧', desc:'Emprego, sindicatos, CLT'},
+  {id:'renda',     label:'Renda',         icon:'💵', desc:'Distribuição, impostos'},
+  {id:'agro',      label:'Agronegócio',   icon:'🌾', desc:'Campo, terra, produção'},
+  {id:'ambiente',  label:'Ambiente',      icon:'🌿', desc:'Meio ambiente, clima'},
+  {id:'seguranca', label:'Segurança',     icon:'🛡️', desc:'Crime, armas, polícia'},
+  {id:'politica',  label:'Política',      icon:'🏛️', desc:'Estado, democracia'},
+];
+
+// Banco de perguntas do quiz de posicionamento
+var QUIZ_PERGS = [
+  // SOCIAL
+  {cat:'social', q:'O Estado deve garantir saúde universal e gratuita para todos os cidadãos.', d:'esq'},
+  {cat:'social', q:'A educação pública deve ser prioridade absoluta, mesmo que exija mais impostos.', d:'esq'},
+  {cat:'social', q:'O setor privado oferece serviços de saúde e educação de melhor qualidade que o público.', d:'dir'},
+  {cat:'social', q:'Programas de cotas raciais em universidades e no serviço público são justos e necessários.', d:'esq'},
+  {cat:'social', q:'O governo deve ampliar programas de habitação popular como o Minha Casa Minha Vida.', d:'esq'},
+  {cat:'social', q:'Investimento em saneamento básico deve ser responsabilidade exclusiva do setor público.', d:'esq'},
+  // ECONOMIA
+  {cat:'economia', q:'O Estado deve intervir fortemente na economia para reduzir desigualdades.', d:'esq'},
+  {cat:'economia', q:'Empresas privadas gerenciam recursos públicos melhor do que o governo.', d:'dir'},
+  {cat:'economia', q:'O Brasil precisa de mais privatizações para crescer economicamente.', d:'dir'},
+  {cat:'economia', q:'O controle de preços pelo governo é uma ferramenta válida para proteger a população.', d:'esq'},
+  {cat:'economia', q:'A autonomia do Banco Central é fundamental para a estabilidade econômica.', d:'dir'},
+  {cat:'economia', q:'O déficit público é um instrumento legítimo de estímulo econômico em períodos de crise.', d:'esq'},
+  // TRABALHO
+  {cat:'trabalho', q:'As leis trabalhistas devem ser mais flexíveis para estimular a geração de empregos.', d:'dir'},
+  {cat:'trabalho', q:'Os sindicatos são fundamentais para proteger os direitos dos trabalhadores.', d:'esq'},
+  {cat:'trabalho', q:'A Reforma Trabalhista de 2017 foi positiva para o Brasil.', d:'dir'},
+  {cat:'trabalho', q:'A terceirização irrestrita prejudica os trabalhadores e deve ser limitada.', d:'esq'},
+  {cat:'trabalho', q:'O trabalho informal deve ser combatido com incentivos à formalização pelo Estado.', d:'esq'},
+  {cat:'trabalho', q:'Acordos individuais entre empregado e empregador devem prevalecer sobre leis gerais.', d:'dir'},
+  // RENDA
+  {cat:'renda', q:'Impostos sobre grandes fortunas devem ser aumentados para financiar o bem-estar social.', d:'esq'},
+  {cat:'renda', q:'O Bolsa Família e similares são fundamentais para combater a extrema pobreza.', d:'esq'},
+  {cat:'renda', q:'Uma renda básica universal para todos os cidadãos seria benéfica para o Brasil.', d:'esq'},
+  {cat:'renda', q:'A desoneração da folha de pagamento estimula mais empregos do que programas sociais.', d:'dir'},
+  {cat:'renda', q:'A tributação no Brasil é injusta e pesa mais sobre os pobres do que os ricos.', d:'esq'},
+  {cat:'renda', q:'Reduzir impostos para empresas é a melhor forma de gerar empregos e renda.', d:'dir'},
+  // AGRO
+  {cat:'agro', q:'A reforma agrária é necessária para reduzir a desigualdade no campo brasileiro.', d:'esq'},
+  {cat:'agro', q:'O agronegócio é o principal motor econômico do Brasil e deve ser priorizado.', d:'dir'},
+  {cat:'agro', q:'A agricultura familiar deve receber mais subsídios e proteções do governo.', d:'esq'},
+  {cat:'agro', q:'A expansão da fronteira agrícola no Cerrado e na Amazônia é necessária para o desenvolvimento.', d:'dir'},
+  {cat:'agro', q:'O Código Florestal deve ser mais rigoroso para proteger biomas brasileiros.', d:'esq'},
+  {cat:'agro', q:'A demarcação de terras indígenas prejudica o desenvolvimento agrícola do país.', d:'dir'},
+  // AMBIENTE
+  {cat:'ambiente', q:'A proteção ambiental deve prevalecer sobre interesses econômicos de curto prazo.', d:'esq'},
+  {cat:'ambiente', q:'O Brasil deve liderar globalmente no combate às mudanças climáticas.', d:'esq'},
+  {cat:'ambiente', q:'As multas ambientais no Brasil são excessivas e prejudicam o desenvolvimento.', d:'dir'},
+  {cat:'ambiente', q:'A transição para energia limpa deve ser acelerada mesmo com custo econômico.', d:'esq'},
+  {cat:'ambiente', q:'A mineração em terras indígenas pode ser feita de forma sustentável e deve ser permitida.', d:'dir'},
+  // SEGURANÇA
+  {cat:'seguranca', q:'A segurança pública melhora principalmente com investimento social, não só com policiamento.', d:'esq'},
+  {cat:'seguranca', q:'Cidadãos deveriam ter mais liberdade para adquirir armas legalmente.', d:'dir'},
+  {cat:'seguranca', q:'A redução da maioridade penal para 16 anos melhoraria a segurança pública.', d:'dir'},
+  {cat:'seguranca', q:'A abordagem policial em áreas periféricas é muitas vezes racista e deve ser investigada.', d:'esq'},
+  {cat:'seguranca', q:'Penas mais severas e presídios mais rígidos reduzem efetivamente a criminalidade.', d:'dir'},
+  // POLÍTICA
+  {cat:'politica', q:'O financiamento público de campanhas eleitorais é preferível ao privado.', d:'esq'},
+  {cat:'politica', q:'O Estado laico deve garantir que valores religiosos não influenciem leis civis.', d:'esq'},
+  {cat:'politica', q:'O papel das Forças Armadas deve ser estritamente limitado à defesa nacional.', d:'esq'},
+  {cat:'politica', q:'A imprensa brasileira tem um viés ideológico que distorce a informação política.', d:'dir'},
+  {cat:'politica', q:'A descentralização do poder para estados e municípios é preferível a um governo federal forte.', d:'dir'},
+];
+
+// Banco de perguntas do quiz de conhecimento
+var KONW_PERGS = [
+  // FÁCIL - programas sociais
+  {cat:'social', diff:'easy', q:'O Bolsa Família, maior programa de transferência de renda do Brasil, foi criado por qual governo?', o:['Governo FHC (PSDB)','Governo Lula (PT)','Governo Dilma (PT)','Governo Bolsonaro (PL)'], ok:1, ex:'Bolsa Família criado em 2003 pelo governo Lula 1. Unificou vários programas sociais do governo FHC e expandiu o atendimento. É considerado um dos maiores programas sociais do mundo.'},
+  {cat:'social', diff:'easy', q:'O PROUNI, que oferece bolsas em faculdades privadas para estudantes pobres, foi criado por qual campo político?', o:['Direita (PSDB)','Esquerda (PT)','Centro (PMDB)'], ok:1, ex:'PROUNI criado em 2005 pelo governo Lula (PT). Já beneficiou mais de 4 milhões de estudantes com bolsas integrais e parciais em faculdades privadas.'},
+  {cat:'social', diff:'easy', q:'O programa Minha Casa Minha Vida foi lançado em qual governo?', o:['Governo FHC','Governo Lula 2','Governo Dilma 1'], ok:1, ex:'Minha Casa Minha Vida foi lançado em 2009 no governo Lula 2 (PT). Já entregou mais de 5 milhões de unidades habitacionais em todo o Brasil.'},
+  {cat:'economia', diff:'easy', q:'O Plano Real, que acabou com a hiperinflação brasileira nos anos 90, foi criado em qual governo?', o:['Governo Itamar Franco / FHC (PSDB)','Governo Lula (PT)','Governo Collor (PRN)'], ok:0, ex:'O Plano Real foi criado em 1994 pelo então Ministro da Fazenda FHC, ainda no governo Itamar Franco. FHC se elegeu presidente em 1994 com o sucesso do Plano. É o maior marco econômico recente do Brasil.'},
+  {cat:'trabalho', diff:'easy', q:'A Reforma Trabalhista de 2017, que flexibilizou a CLT, foi aprovada em qual governo?', o:['Governo Dilma (PT)','Governo Temer (PMDB)','Governo Bolsonaro (PL)'], ok:1, ex:'Reforma Trabalhista aprovada em 2017 pelo governo Michel Temer (PMDB), após o impeachment de Dilma. Permitiu contratos intermitentes, trabalho parcial e prevalência do negociado sobre o legislado.'},
+  // MÉDIO
+  {cat:'economia', diff:'med', q:'O Banco Central Autônomo, com mandato fixo para seus dirigentes, foi aprovado por qual governo?', o:['Governo Lula 2 (PT)','Governo Temer (PMDB)','Governo Bolsonaro (PL)'], ok:2, ex:'Lei do BC Autônomo aprovada em 2021 no governo Bolsonaro, proposta pelo ministro Paulo Guedes. Garante mandatos fixos de 4 anos para o presidente e diretores do Banco Central, blindando-os de pressões políticas.'},
+  {cat:'renda', diff:'med', q:'O Teto de Gastos (PEC 95/2016) congelou gastos públicos por quantos anos?', o:['10 anos','15 anos','20 anos'], ok:2, ex:'A PEC do Teto de Gastos aprovada em 2016 congelou gastos públicos por 20 anos corrigidos apenas pela inflação. Foi aprovada no governo Temer como medida de austeridade fiscal. Substituída pelo Arcabouço Fiscal em 2023.'},
+  {cat:'trabalho', diff:'med', q:'Qual lei criou o MEI (Microempreendedor Individual), formalizado milhões de trabalhadores autônomos?', o:['Lei Complementar 128/2008 — governo Lula','Lei 13.467/2017 — governo Temer','Lei 10.101/2000 — governo FHC'], ok:0, ex:'O MEI foi criado pela Lei Complementar 128/2008 no governo Lula 2. É considerado uma das maiores políticas de formalização de trabalhadores do Brasil — mais de 14 milhões de MEIs registrados hoje.'},
+  {cat:'agro', diff:'med', q:'A bancada ruralista no Congresso é principalmente vinculada a qual campo político?', o:['Esquerda — defende agricultura familiar','Centro-direita e Direita — apoia o agronegócio','Centro — equilibra os dois lados'], ok:1, ex:'A bancada ruralista (FPA — Frente Parlamentar da Agropecuária) é composta principalmente por parlamentares de centro-direita e direita. Defende propriedade rural, redução de demarcações indígenas, flexibilização ambiental e financiamento do agronegócio.'},
+  {cat:'social', diff:'med', q:'O Estatuto da Criança e do Adolescente (ECA), lei fundamental de proteção a menores, foi aprovado em qual governo?', o:['Governo FHC (1995)','Governo Sarney (1988)','Governo Collor (1990)'], ok:2, ex:'O ECA foi aprovado em 1990 no governo Fernando Collor, resultado de ampla mobilização social pós-Constituição de 1988. Estabelece direitos fundamentais de crianças e adolescentes e é referência mundial.'},
+  {cat:'economia', diff:'med', q:'Qual foi o principal programa de desonerações fiscais do governo Dilma que gerou controvérsia?', o:['Bolsa Família Ampliado','Desonerações da folha de pagamento (2012)','Programa de PPPs'], ok:1, ex:'As desonerações da folha (substituição da contribuição patronal por alíquota sobre receita bruta) beneficiaram setores industriais a partir de 2012. Custaram bilhões aos cofres públicos e foram acusadas de contribuir para o déficit que levou às "pedaladas fiscais" de Dilma.'},
+  {cat:'renda', diff:'med', q:'O FGTS (Fundo de Garantia por Tempo de Serviço) foi criado em qual período histórico?', o:['Ditadura Militar — 1966','Redemocratização — 1988','Governo FHC — 1998'], ok:0, ex:'O FGTS foi criado em 1966 durante a Ditadura Militar, no governo Castello Branco, como substituto da estabilidade no emprego. O trabalhador deposita 8% do salário em conta vinculada, sacável em demissão sem justa causa, aposentadoria ou compra de imóvel.'},
+  // DIFÍCIL
+  {cat:'economia', diff:'hard', q:'Qual foi o crescimento médio do PIB brasileiro durante os governos Lula 1 e 2 (2003-2010)?', o:['1,5% ao ano','3,9% ao ano','6,8% ao ano'], ok:1, ex:'O PIB cresceu em média 3,9% ao ano entre 2003-2010. O auge foi 2010 com 7,5% de crescimento (maior desde 1986). O período foi favorecido pelo boom das commodities, expansão do crédito, crescimento do mercado interno e programas sociais.'},
+  {cat:'trabalho', diff:'hard', q:'A "prevalência do negociado sobre o legislado", inserida na Reforma Trabalhista de 2017, significa que:', o:['Sindicatos podem criar direitos acima da CLT','Acordos coletivos podem reduzir direitos previstos na CLT','O Estado define o salário mínimo por negociação'], ok:1, ex:'A prevalência do negociado sobre o legislado permite que acordos coletivos negociados entre empresas e sindicatos se sobreponham a dispositivos da CLT. Isso inclui redução de intervalo intrajornada, banco de horas, parcelamento de férias etc. Críticos apontam enfraquecimento de direitos históricos.'},
+  {cat:'renda', diff:'hard', q:'Qual é a alíquota máxima do Imposto de Renda Pessoa Física (IRPF) no Brasil atualmente?', o:['25%','27,5%','35%'], ok:1, ex:'A alíquota máxima do IRPF é 27,5% para rendimentos acima de R$ 4.664,68 mensais. O Brasil tem apenas 5 faixas de tributação — poucos países desenvolvidos. Reformadores de esquerda propõem ampliar alíquotas para rendas mais altas. A direita defende reduzir ou eliminar o IR para rendas médias.'},
+  {cat:'agro', diff:'hard', q:'Qual percentual do PIB brasileiro o agronegócio representou em 2023?', o:['15,2%','22,1%','27,4%'], ok:2, ex:'O agronegócio representou 27,4% do PIB em 2023, segundo a CNA. Inclui produção primária, indústria e serviços relacionados. O Brasil é o maior exportador mundial de soja, café, açúcar, celulose e frango.'},
+  {cat:'seguranca', diff:'hard', q:'O Estatuto do Desarmamento (Lei 10.826/2003) foi aprovado em qual governo e qual era seu objetivo central?', o:['Governo Lula — restringir posse e porte de armas','Governo FHC — liberar compra de armas','Governo Bolsonaro — flexibilizar o acesso a armas'], ok:0, ex:'Estatuto do Desarmamento aprovado em 2003 no governo Lula (PT). Restringiu posse e porte de armas, criou o SINARM (cadastro nacional) e realizou campanha de entrega voluntária. O governo Bolsonaro editou decretos que flexibilizaram partes do estatuto sem revogá-lo.'},
+  {cat:'social', diff:'hard', q:'O SUS foi criado pela Constituição de 1988. Qual percentual mínimo do orçamento federal deve ser aplicado em saúde?', o:['12% da receita corrente líquida','15% da receita corrente líquida','Não existe mínimo constitucional'], ok:1, ex:'A Emenda Constitucional 86/2015 fixou em 15% da Receita Corrente Líquida o mínimo federal para saúde. Estados devem aplicar 12% e municípios 15% de suas receitas. O SUS atende 75% da população brasileira.'},
+  {cat:'economia', diff:'hard', q:'O que foi o "Novo PAC" relançado em 2023 pelo governo Lula 3?', o:['Programa de privatização de estatais','Programa de investimentos em infraestrutura de R$ 1,7 trilhão','Programa de transferência de renda ampliado'], ok:1, ex:'O Novo PAC, lançado em 2023, prevê R$ 1,7 trilhão em investimentos públicos e privados até 2026 em infraestrutura, saneamento, habitação, saúde, educação e transição energética. É continuidade do PAC lançado em 2007 no governo Lula 2.'},
+  {cat:'politica', diff:'hard', q:'O que determina a Lei da Ficha Limpa (Lei Complementar 135/2010)?', o:['Partidos com caixa dois perdem registro','Candidatos condenados em 2ª instância são inelegíveis por 8 anos','Obriga transparência total em doações de campanha'], ok:1, ex:'A Lei da Ficha Limpa (2010) tornou inelegíveis por 8 anos candidatos condenados em 2ª instância por crimes como corrupção, improbidade e tráfico. Foi resultado de iniciativa popular com 1,6 milhão de assinaturas. Apoiada por todos os campos, mas contestada por políticos afetados.'},
+  {cat:'agro', diff:'hard', q:'O que é o CAR (Cadastro Ambiental Rural) e em qual lei foi instituído?', o:['Registro de propriedades rurais — Código Florestal 2012','Cadastro de desmatadores — Lei da Mata Atlântica','Licença ambiental para agronegócio — CONAMA'], ok:0, ex:'O CAR foi criado pelo Código Florestal de 2012 (Lei 12.651). É um registro eletrônico obrigatório para imóveis rurais que mapeia áreas de reserva legal, preservação permanente e uso consolidado. Controverso porque foi associado à anistia de desmatadores anteriores a 2008.'},
+  {cat:'trabalho', diff:'hard', q:'Qual é o atual salário mínimo nacional no Brasil (2024)?', o:['R$ 1.320,00','R$ 1.412,00','R$ 1.520,00'], ok:1, ex:'O salário mínimo em 2024 é R$ 1.412,00, reajustado pelo governo Lula 3 acima da inflação, seguindo política de valorização real. O valor representa ganho real de 2,5% acima do INPC. É o maior em termos reais da história recente.'},
+];
+
+// Dados de eleições
+var ELEICOES = [
+  {a:2002, t:'Lula 1 vence José Serra (PSDB)', v:'PT · Esquerda', c:'#e63946',
+   desc:'Luiz Inácio Lula da Silva (PT) eleito com 61,3% no 2º turno, encerrando 8 anos de PSDB. Primeira vez que a esquerda chegava à presidência no Brasil democrático.',
+   stats:[{v:'61,3%',l:'Votos Lula'},{v:'38,7%',l:'Votos Serra'},{v:'122 mi',l:'Eleitores'}],
+   destaques:['Início do Bolsa Família (2003)','Crescimento do PIB acima de 3%','Política externa Sul-Sul','Fome Zero','PROUNI criado em 2005']},
+  {a:2006, t:'Lula 2 reeleito, derrota Alckmin', v:'PT · Esquerda', c:'#e63946',
+   desc:'Lula reeleito com 60,8% no 2º turno, apesar do escândalo do Mensalão (2005). Impulsionado pelos programas sociais e crescimento econômico.',
+   stats:[{v:'60,8%',l:'Votos Lula'},{v:'39,2%',l:'Votos Alckmin'},{v:'125 mi',l:'Eleitores'}],
+   destaques:['PIB cresce 4% ao ano em média','Bolsa Família consolida-se','PAC lançado (2007)','Descoberta do pré-sal (2007)','Brasil vira grau de investimento']},
+  {a:2010, t:'Dilma eleita, 1ª presidenta', v:'PT · Esquerda', c:'#e63946',
+   desc:'Dilma Rousseff (PT) eleita com 56,1% no 2º turno sobre José Serra (PSDB). Primeira mulher presidenta do Brasil. Sucedeu Lula no auge da popularidade petista.',
+   stats:[{v:'56,1%',l:'Votos Dilma'},{v:'43,9%',l:'Votos Serra'},{v:'135 mi',l:'Eleitores'}],
+   destaques:['PIB cresce 7,5% em 2010 (maior desde 86)','Minha Casa Minha Vida ampliado','Desonerações fiscais controversas','Crise política cresce a partir de 2013','Copa do Mundo 2014']},
+  {a:2014, t:'Dilma reeleita por margem mínima', v:'PT · Esquerda', c:'#e63946',
+   desc:'Dilma vence Aécio Neves (PSDB) com 51,6% — a eleição mais acirrada até então. Início de grave crise econômica e política. Protestos de 2015 e Operação Lava Jato em andamento.',
+   stats:[{v:'51,6%',l:'Votos Dilma'},{v:'48,4%',l:'Votos Aécio'},{v:'143 mi',l:'Eleitores'}],
+   destaques:['Início do ajuste fiscal com Levy','Inflação e desemprego sobem','Lava Jato acelera','Manifestações de 2015','Processo de impeachment iniciado']},
+  {a:2016, t:'Impeachment — Temer assume', v:'PMDB · Centro', c:'#f4a261',
+   desc:'Dilma sofre impeachment por pedaladas fiscais (manipulação contábil). Aprovado com 367 votos no Senado. Michel Temer (PMDB) assume e governa até 2018 com agenda liberal.',
+   stats:[{v:'367',l:'Votos no Senado'},{v:'Ago/2016',l:'Data'},{v:'55 vs 22',l:'Senadoras'}],
+   destaques:['PEC do Teto de Gastos (2016)','Reforma Trabalhista (2017)','Operação Lava Jato no auge','Desemprego atinge 14% (2017)','BC inicia ciclo de corte de juros']},
+  {a:2018, t:'Bolsonaro vence Haddad com 55,1%', v:'PSL/PL · Direita', c:'#48cae4',
+   desc:'Jair Bolsonaro (PSL) vence Fernando Haddad (PT) com 55,1% no 2º turno. Discurso anticorrupção, pró-armas e conservador. Paulo Guedes anuncia agenda ultraliberal.',
+   stats:[{v:'55,1%',l:'Votos Bolsonaro'},{v:'44,9%',l:'Votos Haddad'},{v:'148 mi',l:'Eleitores'}],
+   destaques:['Reforma da Previdência (2019)','Marco do Saneamento (2020)','BC Autônomo (2021)','Pandemia Covid-19 (2020-2021)','Privatização de aeroportos e estradas','Decretos de armas']},
+  {a:2022, t:'Lula 3 vence Bolsonaro por 1,8%', v:'PT · Esquerda', c:'#e63946',
+   desc:'Lula retorna com 50,9% — a eleição mais polarizada da redemocratização. País dividido ao meio. Questionamento dos resultados por bolsonaristas. Ataques de 8 de janeiro de 2023.',
+   stats:[{v:'50,9%',l:'Votos Lula'},{v:'49,1%',l:'Votos Bolsonaro'},{v:'156 mi',l:'Eleitores'}],
+   destaques:['Arcabouço Fiscal substitui Teto (2023)','Novo PAC de R$ 1,7 trilhão','Bolsa Família com R$ 600','8 de janeiro — ataques ao Congresso','Reforma tributária aprovada (IVA)']},
+];
+
+// Partidos
+var PARTIDOS = [
+  {s:'PT',n:'Partido dos Trabalhadores',e:'esq',el:'Esquerda',dc:'Fundado em 1980 por sindicalistas e movimentos sociais. Maior partido de esquerda da América Latina. Governou o Brasil de 2003-2010 e retornou em 2023.',ds:['Bolsa Família (2003)','PROUNI (2005)','PAC (2007-2010, 2023)','Minha Casa Minha Vida','MEI — formalização','Pré-sal e Petrobras','Fome Zero','FIES ampliado']},
+  {s:'PSOL',n:'Partido Socialismo e Liberdade',e:'esq',el:'Esquerda',dc:'Fundado em 2004 por dissidentes do PT. Defende socialismo democrático, feminismo e direitos LGBTQIA+. Esquerda mais radical.',ds:['Bancada feminista no Congresso','Guilherme Boulos — movimento de moradia','MTST','Proteção de minorias','Crítica a privatizações']},
+  {s:'PCdoB',n:'Partido Comunista do Brasil',e:'esq',el:'Esquerda',dc:'Fundado em 1922. Defende soberania nacional, políticas sociais e reformas estruturais. Parte da coligação com o PT.',ds:['Esporte como direito','Movimento estudantil — UNE','Secretarias em governos PT']},
+  {s:'PDT',n:'Partido Democrático Trabalhista',e:'centro',el:'Centro-esq',dc:'Fundado por Leonel Brizola em 1980. Herança do trabalhismo de Getúlio Vargas. Hoje posicionado no centro-esquerda.',ds:['CIEPs no Rio de Janeiro (Brizola)','Política trabalhista histórica','Ciro Gomes — candidaturas presidenciais']},
+  {s:'MDB',n:'Movimento Democrático Brasileiro',e:'centro',el:'Centro',dc:'Herdeiro do PMDB, que era a oposição "permitida" ao regime militar. Maior partido de centro. Participou de todos os governos desde a redemocratização.',ds:['Michel Temer — presidente 2016-2018','Reforma Trabalhista (base)','Teto de Gastos','Eunício Oliveira, Baleia Rossi']},
+  {s:'PSDB',n:'Partido da Social Democracia Brasileira',e:'centro',el:'Centro',dc:'Fundado em 1988 por dissidentes do PMDB. Governou com FHC 1995-2002. Plano Real e privatizações. Perdeu espaço após 4 derrotas para o PT.',ds:['Plano Real (1994)','Privatizações: Telebrás, Vale','Lei de Responsabilidade Fiscal (2000)','FHC — 2 mandatos','Aécio Neves, Geraldo Alckmin']},
+  {s:'União',n:'União Brasil',e:'centro',el:'Centro-dir',dc:'Fusão de DEM e PSL em 2022. Grande partido de centro-direita com a maior bancada na Câmara. Presença em todos os estados.',ds:['Maior bancada na Câmara (2022)','Arthur Lira (PP, aliado)','ACM Neto, Rodrigo Maia']},
+  {s:'PL',n:'Partido Liberal',e:'dir',el:'Direita',dc:'Partido de Jair Bolsonaro desde 2022. Cresceu de 52 para 99 deputados em 2022. Maior partido da direita conservadora.',ds:['Governo Bolsonaro 2019-2022','Reforma da Previdência (2019)','BC Autônomo (2021)','Paulo Guedes — agenda liberal','Decretos de armas']},
+  {s:'Novo',n:'Partido Novo',e:'dir',el:'Dir. Liberal',dc:'Fundado em 2011. Defende Estado mínimo, liberalismo econômico radical e zero financiamento público de campanha.',ds:['Romeu Zema — Gov. Minas Gerais','Eduardo Leite — Gov. Rio Grande do Sul','Luciano Huck chegou a ser cotado']},
+  {s:'Republicanos',n:'Republicanos',e:'dir',el:'Direita',dc:'Ligado à Igreja Universal do Reino de Deus (Edir Macedo). Defende valores cristãos, família e conservadorismo moral.',ds:['Base evangélica sólida','Pautas conservadoras no Congresso','Celso Russomanno — SP']},
+  {s:'PP',n:'Progressistas',e:'centro',el:'Centro-dir',dc:'Partido de centro-direita com forte presença no agronegócio, interior e fisiologismo. Sempre na base governista.',ds:['Arthur Lira — Presidente da Câmara 2021-2024','Bancada ruralista','Presença em todos os estados']},
+  {s:'PSD',n:'Partido Social Democrático',e:'centro',el:'Centro',dc:'Fundado por Gilberto Kassab em 2011. Partido de gestores e prefeitos. Participou de governos de esquerda e direita.',ds:['Gilberto Kassab — fundador','André Fufuca, Kassab em SP','Partido de gestores municipais']},
+];
+
+// Projetos
+var PROJETOS = {
+  esq:[
+    {t:'Bolsa Família / Bolsa Brasil',d:'Transferência de renda criada em 2003 por Lula, unificando programas anteriores. Em 2023, virou Bolsa Brasil com R$600+. Tirou mais de 40 milhões da extrema pobreza.',s:'stok',sl:'Ativo'},
+    {t:'PROUNI',d:'Bolsas em faculdades privadas. 50% integral (renda até 1,5 SM) e 50% parcial. Mais de 4 milhões de bolsas desde 2005.',s:'stok',sl:'Ativo'},
+    {t:'Minha Casa Minha Vida',d:'Habitação popular com subsídio governamental para famílias de baixa renda. Criado em 2009, retomado em 2023 com ampliações.',s:'stok',sl:'Ativo'},
+    {t:'Fome Zero',d:'Conjunto de 55 programas de segurança alimentar: cisternas, banco de alimentos, restaurantes populares, merenda escolar. Virou referência mundial.',s:'stok',sl:'Histórico'},
+    {t:'PAC — Aceleração do Crescimento',d:'Programa de infraestrutura em transporte, saneamento, energia e habitação. 1ª versão 2007-2010. Novo PAC em 2023 com R$1,7 trilhão.',s:'stpar',sl:'Em andamento'},
+    {t:'FIES Ampliado',d:'Financiamento Estudantil do Ensino Superior expandido no governo Dilma. Permite parcelamento de mensalidades em faculdades privadas.',s:'stok',sl:'Ativo'},
+    {t:'MEI — Microempreendedor Individual',d:'Criado em 2008. Formalizou milhões de trabalhadores autônomos com CNPJ, previdência e alíquota reduzida. Hoje 14+ milhões de MEIs.',s:'stok',sl:'Ativo'},
+    {t:'Pré-sal — Partilha de Produção',d:'Marco regulatório de 2010 que criou a Petrobras como operadora obrigatória e destinou royalties ao fundo social. Revisado por governos seguintes.',s:'stpol',sl:'Histórico/Polêmico'},
+  ],
+  centro:[
+    {t:'Plano Real (FHC – PSDB)',d:'Criado em 1994 por FHC como Ministro da Fazenda. Eliminou hiperinflação de 2.700%/ano. Ancoragem cambial seguida de câmbio flutuante a partir de 1999.',s:'stok',sl:'Consolidado'},
+    {t:'Lei de Responsabilidade Fiscal (LRF)',d:'Aprovada em 2000. Impõe regras de controle de gastos para estados e municípios, com punição para descumpridores.',s:'stok',sl:'Vigente'},
+    {t:'Privatizações FHC (1995-2002)',d:'Telebrás (telecomunicações), Vale do Rio Doce, CVRD, CSN, Embraer, Eletrobrás (parcial). Gerou bilhões mas debate sobre entrega de patrimônio nacional.',s:'stpol',sl:'Histórico'},
+    {t:'Marco Legal do Saneamento (2020)',d:'Aprovado no governo Bolsonaro com apoio centrista. Abre saneamento básico à iniciativa privada. Meta: universalizar água e esgoto até 2033.',s:'stpar',sl:'Em implementação'},
+    {t:'Reforma Trabalhista (2017)',d:'Aprovada no governo Temer (PMDB). Flexibilizou CLT, criou contrato intermitente, home office e prevalência do negociado sobre o legislado.',s:'stpol',sl:'Vigente/Polêmico'},
+  ],
+  dir:[
+    {t:'Teto de Gastos — PEC 95 (2016)',d:'Congelou crescimento real dos gastos federais por 20 anos. Aprovado no governo Temer. Críticos dizem que estrangulou saúde e educação. Substituído em 2023.',s:'strv',sl:'Substituído'},
+    {t:'Banco Central Autônomo (2021)',d:'Mandato fixo de 4 anos para presidente e diretores do BC. Reduz interferência política. Proposta de Paulo Guedes no governo Bolsonaro.',s:'stok',sl:'Vigente'},
+    {t:'Reforma da Previdência (2019)',d:'EC 103/2019. Idade mínima de 65 (homens) e 62 (mulheres) anos. Tempo de contribuição de 20 e 15 anos. Prevê economia de R$800 bi em 10 anos.',s:'stpol',sl:'Vigente'},
+    {t:'Marco das Ferrovias (2021)',d:'Criou regime de autorização privada para ferrovias, sem necessidade de licitação. Pretende expandir malha ferroviária com investimento privado.',s:'stpar',sl:'Em andamento'},
+    {t:'Concessões de Aeroportos',d:'Governo Bolsonaro concedeu 22 aeroportos à iniciativa privada, incluindo GRU, GIG e BSB. Investimentos previstos de R$30 bilhões.',s:'stok',sl:'Concluído'},
+    {t:'Decretos de Armas',d:'Governo Bolsonaro editou 30+ decretos liberalizando posse e porte de armas. Ampliou limites de calibres, aumentou quantidade permitida, facilitou porte rural.',s:'stpol',sl:'Parcialmente revisado'},
+  ],
+};
+
+// Leis
+var LEIS = {
+  trabalhista:[
+    {n:'CLT — Decreto-Lei 5.452/1943',t:'Consolidação das Leis do Trabalho',b:'lb-esq',e:'Centro-esq (Getúlio Vargas)',desc:'A CLT foi criada no governo Getúlio Vargas, inspirada no modelo corporativista italiano. Consolidou leis esparsas e criou a Justiça do Trabalho. É a base do direito do trabalho brasileiro — carteira assinada, férias, FGTS, horas extras, 13º salário.'},
+    {n:'Lei 13.467/2017',t:'Reforma Trabalhista',b:'lb-cen',e:'Centro-dir (Temer)',desc:'Flexibilizou a CLT. Criou contrato intermitente (por hora), home office, jornada 12x36 como padrão, redução de intervalo intrajornada, e a prevalência do negociado sobre o legislado. Gerou forte oposição dos sindicatos.'},
+    {n:'Lei Complementar 128/2008',t:'MEI — Microempreendedor Individual',b:'lb-esq',e:'Esquerda (Lula)',desc:'Criou o MEI, permitindo que trabalhadores autônomos se formalizem com CNPJ, previdência social e alíquota mensal reduzida (hoje R$71,60). É uma das maiores políticas de formalização do trabalho informal do Brasil.'},
+    {n:'Art. 7º CF/1988',t:'Direitos Trabalhistas Constitucionais',b:'lb-esq',e:'Constituinte',desc:'A Constituição de 1988 elevou direitos trabalhistas a nível constitucional: salário mínimo, FGTS, 13º salário, férias com 1/3 a mais, licença maternidade e paternidade, jornada de 44h semanais, horas extras com 50% adicional.'},
+  ],
+  social:[
+    {n:'Lei 8.742/1993',t:'LOAS — Lei Orgânica da Assistência Social',b:'lb-esq',e:'Centro (Itamar Franco)',desc:'Regulamentou a Constituição em matéria de assistência social. Criou o BPC (Benefício de Prestação Continuada), que garante 1 salário mínimo a idosos e deficientes sem renda. Base de toda a política de assistência social.'},
+    {n:'Lei 8.080/1990',t:'Lei Orgânica da Saúde — SUS',b:'lb-esq',e:'Centro (Collor)',desc:'Criou e regulamentou o SUS, estabelecendo princípios de universalidade, integralidade e equidade. Determina que saúde é direito de todos e dever do Estado. O SUS atende 75% da população brasileira gratuitamente.'},
+    {n:'Lei 10.836/2004',t:'Bolsa Família',b:'lb-esq',e:'Esquerda (Lula)',desc:'Criou o Bolsa Família unificando Bolsa Escola, Bolsa Alimentação, Auxílio Gás e Cartão Alimentação. Condicionado à frequência escolar e vacinação das crianças. Referência mundial de transferência condicionada de renda.'},
+    {n:'Lei 8.069/1990',t:'ECA — Estatuto da Criança e do Adolescente',b:'lb-esq',e:'Centro (Collor)',desc:'Substituiu o Código de Menores de 1979. Estabeleceu crianças como sujeitos de direitos, não meros objetos de proteção. Criou o Conselho Tutelar. É referência internacional na área de proteção à infância.'},
+  ],
+  economica:[
+    {n:'Lei Complementar 101/2000',t:'Lei de Responsabilidade Fiscal (LRF)',b:'lb-cen',e:'Centro (FHC)',desc:'Estabeleceu normas de finanças públicas para responsabilidade fiscal. Limites de gastos com pessoal (50% receita — estados, 60% — municípios), vedação de transferências sem receita correspondente, e transparência fiscal.'},
+    {n:'EC 95/2016',t:'Teto de Gastos Públicos',b:'lb-cen',e:'Centro-dir (Temer)',desc:'Congelou o crescimento real das despesas federais por 20 anos, corrigindo apenas pela inflação. Aprovada para equilibrar as contas após déficit de Dilma. Substituída pelo Arcabouço Fiscal (LC 200/2023) no governo Lula 3.'},
+    {n:'Lei 13.874/2019',t:'Declaração de Direitos de Liberdade Econômica',b:'lb-dir',e:'Direita (Bolsonaro)',desc:'A "MP da Liberdade Econômica" reduziu exigências para abrir empresas, facilitou licenças, criou a Declaração de Direitos do Empresário. Parte da agenda de Paulo Guedes de desburocratização.'},
+    {n:'LC 200/2023',t:'Arcabouço Fiscal (substituiu Teto)',b:'lb-esq',e:'Esquerda (Lula)',desc:'Substituiu o Teto de Gastos de 2016. Permite crescimento real de gastos entre 0,6% e 2,5% ao ano, desde que a receita cresça. Mais flexível que o Teto, mas mantém regras de responsabilidade fiscal.'},
+  ],
+  ambiental:[
+    {n:'Lei 12.651/2012',t:'Código Florestal',b:'lb-dir',e:'Centro-dir (pressão ruralista em governo Dilma)',desc:'Redefiniu áreas de preservação permanente (APPs) e reserva legal. Polêmico por ter reduzido exigências anteriores e anistiar desmatadores de antes de 2008. Ruralistas consideraram avanço; ambientalistas, retrocesso.'},
+    {n:'Lei 9.605/1998',t:'Lei de Crimes Ambientais',b:'lb-cen',e:'Centro (FHC)',desc:'Criminalizou o dano ao meio ambiente. Prevê penas para pessoas físicas e jurídicas que causem dano à flora, fauna, poluição e patrimônio natural. Base legal para autos de infração do IBAMA.'},
+    {n:'Lei 14.119/2021',t:'Política Nacional de Pagamento por Serviços Ambientais',b:'lb-dir',e:'Direita (Bolsonaro)',desc:'Criou mecanismo de pagamento a proprietários rurais que preservem vegetação acima do mínimo legal. Instrumento de mercado para conservação. Aprovado com apoio transversal.'},
+  ],
+  seguranca:[
+    {n:'Lei 10.826/2003',t:'Estatuto do Desarmamento',b:'lb-esq',e:'Esquerda (Lula)',desc:'Restringiu posse e porte de armas de fogo. Criou o SINARM (Sistema Nacional de Armas). Proibiu porte para civis em geral. O governo Bolsonaro editou 30+ decretos flexibilizando partes do estatuto sem revogá-lo formalmente.'},
+    {n:'Lei 12.850/2013',t:'Lei das Organizações Criminosas',b:'lb-esq',e:'Esquerda (Dilma)',desc:'Definiu organização criminosa (4+ pessoas, estrutura ordenada). Criou a colaboração premiada (delação premiada), infiltração policial e ação controlada. Instrumental na Operação Lava Jato.'},
+    {n:'Lei 13.964/2019',t:'Pacote Anticrime (Moro)',b:'lb-dir',e:'Direita (Bolsonaro)',desc:'Proposto pelo então Ministro Sergio Moro. Endureceu penas, criou o juiz das garantias (depois suspenso), aumentou tempo mínimo para progressão de regime em crimes hediondos. Parte aprovada, parte vetada por Bolsonaro.'},
+  ],
+};
+
+// Dados econômicos por governo
+var ECO_DADOS = {
+  pib:[
+    {gov:'FHC 1 (1995-1998)',e:'centro',pib:'+2,7%/a',obs:'Estabilização com Plano Real, privatizações, crise asiática'},
+    {gov:'FHC 2 (1999-2002)',e:'centro',pib:'+2,2%/a',obs:'Crise cambial 1999, ajuste fiscal, crescimento modesto'},
+    {gov:'Lula 1 (2003-2006)',e:'esq',pib:'+3,5%/a',obs:'Boom commodities, mercado interno em expansão'},
+    {gov:'Lula 2 (2007-2010)',e:'esq',pib:'+4,6%/a',obs:'Pré-crise: 6,1% (2007), pós: 7,5% em 2010'},
+    {gov:'Dilma 1 (2011-2014)',e:'esq',pib:'+2,1%/a',obs:'Desaceleração, desonerações mal-sucedidas'},
+    {gov:'Dilma 2 + Temer (2015-2018)',e:'esq/centro',pib:'-0,3%/a',obs:'Recessão 2015-2016, recuperação lenta'},
+    {gov:'Bolsonaro (2019-2022)',e:'dir',pib:'+1,9%/a',obs:'Pré-pandemia ok, 2020: -3,9%, 2021: +4,6%'},
+    {gov:'Lula 3 (2023-)',e:'esq',pib:'+2,9% (2023)',obs:'Crescimento acima das expectativas, debate fiscal'},
+  ],
+  emprego:[
+    {gov:'FHC (1995-2002)',e:'centro',val:'~8-10%',obs:'Desemprego alto com abertura econômica e privatizações'},
+    {gov:'Lula 1 e 2 (2003-2010)',e:'esq',val:'~6,7% (2010)',obs:'Queda histórica do desemprego; formalização do trabalho'},
+    {gov:'Dilma (2011-2016)',e:'esq',val:'~13% (2016)',obs:'Desemprego triplicou na crise 2015-2016'},
+    {gov:'Temer (2016-2018)',e:'centro',val:'~11,6% (2018)',obs:'Leve melhora com Reforma Trabalhista'},
+    {gov:'Bolsonaro (2019-2022)',e:'dir',val:'~7,9% (2022)',obs:'Pandemia elevou a 14,7% em 2020; recuperou rápido'},
+    {gov:'Lula 3 (2023-)',e:'esq',val:'~6,2% (2024)',obs:'Menor desemprego desde 2012; debate sobre qualidade'},
+  ],
+  renda:[
+    {gov:'FHC (1995-2002)',e:'centro',val:'Estável',obs:'Plano Real reduziu inflação que corroía salários'},
+    {gov:'Lula 1 e 2 (2003-2010)',e:'esq',val:'+72% real',obs:'Maior alta histórica do salário mínimo (2003-2010)'},
+    {gov:'Dilma (2011-2016)',e:'esq',val:'+35% real',obs:'Continuou política de valorização; crise deteriorou'},
+    {gov:'Temer (2016-2018)',e:'centro',val:'+1% real',obs:'Austeridade conteve ganhos reais'},
+    {gov:'Bolsonaro (2019-2022)',e:'dir',val:'Desidexação',obs:'Rompeu política de valorização real do salário mínimo'},
+    {gov:'Lula 3 (2023-)',e:'esq',val:'+2,5% real',obs:'Retomou valorização acima da inflação em 2024'},
+  ],
+  salmin:[
+    {gov:'2002 (FHC final)',e:'centro',val:'R$ 200',obs:'Valor nominal; em termos reais, poder muito menor'},
+    {gov:'2010 (Lula final)',e:'esq',val:'R$ 510',obs:'Alta real acumulada de 72% desde 2003'},
+    {gov:'2016 (Dilma final)',e:'esq',val:'R$ 880',obs:'Continuou crescimento real'},
+    {gov:'2018 (Temer final)',e:'centro',val:'R$ 954',obs:'Crescimento moderado'},
+    {gov:'2022 (Bolsonaro final)',e:'dir',val:'R$ 1.212',obs:'Crescimento nominal; perdeu para inflação em 2021'},
+    {gov:'2024 (Lula 3)',e:'esq',val:'R$ 1.412',obs:'Maior salário mínimo real da história'},
+  ],
+  inflacao:[
+    {gov:'Pré-Plano Real (1993)',e:'',val:'2.477%',obs:'Hiperinflação antes do Plano Real'},
+    {gov:'FHC (1995-2002)',e:'centro',val:'~7% a.a.',obs:'Plano Real controlou; crise 2002 elevou para 12,5%'},
+    {gov:'Lula 1 e 2 (2003-2010)',e:'esq',val:'~5,5% a.a.',obs:'Meta de inflação respeitada; 2003: 9,3%'},
+    {gov:'Dilma (2011-2016)',e:'esq',val:'~7,2% a.a.',obs:'2015: 10,67% — acima da meta; crise fiscal'},
+    {gov:'Temer (2016-2018)',e:'centro',val:'~3,7% a.a.',obs:'Inflação mais baixa desde o Plano Real'},
+    {gov:'Bolsonaro (2019-2022)',e:'dir',val:'~8% a.a.',obs:'Pandemia + combustíveis + energia: 2021: 10,06%'},
+    {gov:'Lula 3 (2023-)',e:'esq',val:'~4,6% a.a.',obs:'Acima do centro da meta (3%); debate sobre BC'},
+  ],
+};
+
+// ══════════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════════
+var qSelectedCats = {};
+var qQty = 10;
+var qQuestions = [];
+var qi = 0;
+var qResps = [];
+
+var kSelectedCats = {};
+var kDiff = 'all';
+var kQty = 10;
+var kQuestions = [];
+var ki = 0;
+var ks = 0;
+var ka = false;
+var kCatScores = {};
+
+// ══════════════════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════════════════
+function goPage(id, btn) {
+  var pages = document.querySelectorAll('.page');
+  for (var i = 0; i < pages.length; i++) pages[i].classList.remove('show');
+  document.getElementById('page-' + id).classList.add('show');
+  var tabs = document.querySelectorAll('.ntab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('act');
+  if (btn) btn.classList.add('act');
+  window.scrollTo(0, 0);
+}
+function goPageBtn(id) {
+  var tabs = document.querySelectorAll('.ntab');
+  for (var i = 0; i < tabs.length; i++) {
+    if (tabs[i].getAttribute('onclick') && tabs[i].getAttribute('onclick').indexOf("'"+id+"'") >= 0) {
+      goPage(id, tabs[i]);
+      return;
+    }
+  }
+  goPage(id, null);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// QUIZ POSICIONAMENTO
+// ══════════════════════════════════════════════════════════════════
+function initQConfig() {
+  var g = document.getElementById('qcats-grid');
+  g.innerHTML = '';
+  for (var i = 0; i < QCATS.length; i++) {
+    var c = QCATS[i];
+    qSelectedCats[c.id] = true;
+    var btn = document.createElement('button');
+    btn.className = 'cat-btn on';
+    btn.setAttribute('data-cat', c.id);
+    btn.innerHTML = '<span class="cat-icon">' + c.icon + '</span><span><div style="font-size:.75rem;font-weight:800;color:#e8e8f8">' + c.label + '</div><div style="font-size:.62rem;color:#7878a8">' + c.desc + '</div></span>';
+    btn.onclick = function() {
+      var cat = this.getAttribute('data-cat');
+      qSelectedCats[cat] = !qSelectedCats[cat];
+      this.classList.toggle('on', qSelectedCats[cat]);
+    };
+    g.appendChild(btn);
+  }
+}
+function setQty(btn) {
+  var all = document.querySelectorAll('.qty-btn[data-q]');
+  for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
+  btn.classList.add('on');
+  qQty = parseInt(btn.getAttribute('data-q'));
+}
+function startQuiz() {
+  var pool = [];
+  for (var i = 0; i < QUIZ_PERGS.length; i++) {
+    if (qSelectedCats[QUIZ_PERGS[i].cat]) pool.push(QUIZ_PERGS[i]);
+  }
+  if (pool.length === 0) { alert('Selecione ao menos uma categoria.'); return; }
+  // Shuffle
+  for (var i = pool.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
+  }
+  qQuestions = qQty > 0 ? pool.slice(0, Math.min(qQty, pool.length)) : pool;
+  qResps = [];
+  for (var i = 0; i < qQuestions.length; i++) qResps.push(null);
+  qi = 0;
+  document.getElementById('qconfig').style.display = 'none';
+  document.getElementById('qshell').style.display = 'block';
+  document.getElementById('rshell').classList.remove('show');
+  renderQ();
+}
+function renderQ() {
+  var p = qQuestions[qi];
+  document.getElementById('qtxt').textContent = (qi + 1) + '. ' + p.q;
+  document.getElementById('qnum').textContent = (qi + 1) + '/' + qQuestions.length;
+  document.getElementById('qpf').style.width = (Math.round(((qi + 1) / qQuestions.length) * 100)) + '%';
+  var catObj = null;
+  for (var i = 0; i < QCATS.length; i++) if (QCATS[i].id === p.cat) catObj = QCATS[i];
+  document.getElementById('qcatbadge').textContent = catObj ? catObj.icon + ' ' + catObj.label : p.cat;
+
+  var row = document.getElementById('lkrow');
+  row.innerHTML = '';
+  for (var i = 1; i <= 5; i++) {
+    var b = document.createElement('button');
+    b.className = 'lb' + (qResps[qi] === i ? ' sel' : '');
+    b.setAttribute('data-v', i);
+    b.textContent = i;
+    b.onclick = function() {
+      var v = parseInt(this.getAttribute('data-v'));
+      qResps[qi] = v;
+      var bs = row.querySelectorAll('.lb');
+      for (var j = 0; j < bs.length; j++) bs[j].classList.toggle('sel', j + 1 === v);
+    };
+    row.appendChild(b);
+  }
+  var de = document.getElementById('qdots');
+  de.innerHTML = '';
+  for (var i = 0; i < qQuestions.length; i++) {
+    var d = document.createElement('div');
+    d.className = 'qdot' + (i === qi ? ' cur' : (qResps[i] !== null ? ' done' : ''));
+    de.appendChild(d);
+  }
+  var pv = document.getElementById('qprev');
+  pv.style.visibility = qi === 0 ? 'hidden' : 'visible';
+  var nx = document.getElementById('qnext');
+  if (qi === qQuestions.length - 1) { nx.textContent = 'Ver resultado →'; nx.className = 'btn bg btn-sm'; }
+  else { nx.textContent = 'Próximo →'; nx.className = 'btn br btn-sm'; }
+}
+function qNext() {
+  if (qResps[qi] === null) { alert('Selecione de 1 a 5.'); return; }
+  if (qi < qQuestions.length - 1) { qi++; renderQ(); }
+  else showRQ();
+}
+function qPrev() { if (qi > 0) { qi--; renderQ(); } }
+function showRQ() {
+  var sc = 0;
+  for (var i = 0; i < qQuestions.length; i++) {
+    var v = qResps[i], m = v - 3;
+    sc += qQuestions[i].d === 'esq' ? -m : m;
+  }
+  var max = qQuestions.length * 2;
+  var pct = (sc + max) / (max * 2);
+  document.getElementById('qshell').style.display = 'none';
+  document.getElementById('rshell').className = 'rshell show pop';
+  var lb, co, dc, ca, ps;
+  if (pct < .2) { lb = 'Esquerda'; co = '#e63946'; dc = 'Você valoriza fortemente igualdade social e um Estado ativo.'; ca = 'Defende políticas públicas universais, redistribuição de renda e proteção de minorias.'; ps = ['PT', 'PSOL', 'PCdoB', 'PDT']; }
+  else if (pct < .38) { lb = 'Centro-esquerda'; co = '#c9642d'; dc = 'Você combina valores progressistas com pragmatismo econômico.'; ca = 'Apoia proteção social e reformas, mas também responsabilidade fiscal.'; ps = ['PT', 'PDT', 'MDB']; }
+  else if (pct < .62) { lb = 'Centro'; co = '#f4a261'; dc = 'Você busca equilíbrio entre Estado e mercado.'; ca = 'Prefere reformas graduais, diálogo e soluções mistas.'; ps = ['MDB', 'PSDB', 'PSD', 'PP']; }
+  else if (pct < .8) { lb = 'Centro-direita'; co = '#1d6fa4'; dc = 'Você valoriza liberdade econômica com proteções mínimas.'; ca = 'Prefere menos intervenção estatal com algumas redes de segurança social.'; ps = ['União', 'PL', 'PP']; }
+  else { lb = 'Direita'; co = '#48cae4'; dc = 'Você prioriza liberdade individual e Estado enxuto.'; ca = 'Defende livre mercado, menos impostos e segurança firme.'; ps = ['PL', 'Novo', 'Republicanos']; }
+  var bg = document.getElementById('rbadge');
+  bg.textContent = lb; bg.style.background = co;
+  bg.style.color = (lb === 'Centro' || lb === 'Centro-direita' || lb === 'Direita') ? '#080810' : '#fff';
+  document.getElementById('rdesc').textContent = dc;
+  document.getElementById('rcarac').textContent = ca;
+  var pt = document.getElementById('rptags'); pt.innerHTML = '';
+  for (var i = 0; i < ps.length; i++) { var sp = document.createElement('span'); sp.className = 'rptag'; sp.textContent = ps[i]; pt.appendChild(sp); }
+  setTimeout(function() { document.getElementById('rmpin').style.left = (pct * 100) + '%'; }, 200);
+  window.scrollTo(0, 0);
+}
+function resetQuiz() {
+  document.getElementById('qconfig').style.display = 'block';
+  document.getElementById('qshell').style.display = 'none';
+  document.getElementById('rshell').className = 'rshell';
+}
+
+// ══════════════════════════════════════════════════════════════════
+// QUIZ CONHECIMENTO
+// ══════════════════════════════════════════════════════════════════
+function initKConfig() {
+  var g = document.getElementById('kcats-grid');
+  g.innerHTML = '';
+  var cats = {};
+  for (var i = 0; i < KONW_PERGS.length; i++) cats[KONW_PERGS[i].cat] = true;
+  for (var id in cats) {
+    kSelectedCats[id] = true;
+    var catObj = null;
+    for (var j = 0; j < QCATS.length; j++) if (QCATS[j].id === id) catObj = QCATS[j];
+    var btn = document.createElement('button');
+    btn.className = 'cat-btn on';
+    btn.setAttribute('data-cat', id);
+    var label = catObj ? catObj.icon + ' ' + catObj.label : id;
+    btn.innerHTML = '<span style="font-size:.75rem;font-weight:800">' + label + '</span>';
+    btn.onclick = function() {
+      var cat = this.getAttribute('data-cat');
+      kSelectedCats[cat] = !kSelectedCats[cat];
+      this.classList.toggle('on', kSelectedCats[cat]);
+    };
+    g.appendChild(btn);
+  }
+}
+function setKDiff(btn) {
+  var all = document.querySelectorAll('[data-d]');
+  for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
+  btn.classList.add('on');
+  kDiff = btn.getAttribute('data-d');
+}
+function setKQty(btn) {
+  var all = document.querySelectorAll('#kconfig .qty-btn[data-q]');
+  for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
+  btn.classList.add('on');
+  kQty = parseInt(btn.getAttribute('data-q'));
+}
+function startKonw() {
+  var pool = [];
+  for (var i = 0; i < KONW_PERGS.length; i++) {
+    var p = KONW_PERGS[i];
+    if (!kSelectedCats[p.cat]) continue;
+    if (kDiff !== 'all' && p.diff !== kDiff) continue;
+    pool.push(p);
+  }
+  if (pool.length === 0) { alert('Nenhuma questão com esses filtros. Ajuste as seleções.'); return; }
+  for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp; }
+  kQuestions = kQty > 0 ? pool.slice(0, Math.min(kQty, pool.length)) : pool;
+  ki = 0; ks = 0; ka = false; kCatScores = {};
+  document.getElementById('kconfig').style.display = 'none';
+  document.getElementById('kshell').style.display = 'block';
+  document.getElementById('kresult').className = 'kresult';
+  renderK();
+}
+function renderK() {
+  var q = kQuestions[ki];
+  document.getElementById('ktxt').textContent = q.q;
+  document.getElementById('klbl').textContent = 'Questão ' + (ki + 1) + ' de ' + kQuestions.length;
+  document.getElementById('kprog').textContent = (ki + 1) + '/' + kQuestions.length;
+  document.getElementById('kbar').style.width = ((ks / kQuestions.length) * 100) + '%';
+  document.getElementById('kscore').textContent = ks + ' pts';
+
+  var oel = document.getElementById('kopts'); oel.innerHTML = '';
+  var diffMap = { easy: '<span class="kdiff df-easy">Fácil</span>', med: '<span class="kdiff df-med">Médio</span>', hard: '<span class="kdiff df-hard">Difícil</span>' };
+  for (var i = 0; i < q.o.length; i++) {
+    var b = document.createElement('button');
+    b.className = 'kopt';
+    b.innerHTML = q.o[i];
+    b.setAttribute('data-i', i);
+    b.onclick = function() { kAns(parseInt(this.getAttribute('data-i'))); };
+    oel.appendChild(b);
+  }
+  document.getElementById('ktxt').innerHTML = q.q + ' ' + (diffMap[q.diff] || '');
+  var fb = document.getElementById('kfb'); fb.className = 'kfb'; fb.textContent = '';
+  document.getElementById('knext').style.display = 'none';
+  document.getElementById('kstatus').textContent = 'Selecione uma opção';
+  ka = false;
+}
+function kAns(idx) {
+  if (ka) return; ka = true;
+  var q = kQuestions[ki];
+  var opts = document.querySelectorAll('.kopt');
+  for (var i = 0; i < opts.length; i++) {
+    opts[i].classList.add('dis');
+    if (i === q.ok) opts[i].classList.add('correct');
+    else if (i === idx) opts[i].classList.add('wrong');
+  }
+  var fb = document.getElementById('kfb');
+  var correct = idx === q.ok;
+  if (correct) {
+    ks++;
+    fb.className = 'kfb show ok';
+    fb.textContent = '✅ Correto! ' + q.ex;
+    if (!kCatScores[q.cat]) kCatScores[q.cat] = {c:0,t:0};
+    kCatScores[q.cat].c++; kCatScores[q.cat].t++;
+  } else {
+    fb.className = 'kfb show no';
+    fb.textContent = '❌ Incorreto. ' + q.ex;
+    if (!kCatScores[q.cat]) kCatScores[q.cat] = {c:0,t:0};
+    kCatScores[q.cat].t++;
+  }
+  document.getElementById('kbar').style.width = ((ks / kQuestions.length) * 100) + '%';
+  document.getElementById('kscore').textContent = ks + ' pts';
+  document.getElementById('kstatus').textContent = correct ? '🎯 +1 ponto!' : '💡 Veja a explicação acima';
+  document.getElementById('knext').style.display = 'block';
+}
+function kNext() {
+  if (ki < kQuestions.length - 1) { ki++; renderK(); }
+  else {
+    document.getElementById('kshell').style.display = 'none';
+    var kr = document.getElementById('kresult'); kr.className = 'kresult show pop';
+    document.getElementById('kfinal').textContent = ks;
+    document.getElementById('kresult-sub').textContent = 'de ' + kQuestions.length + ' pontos';
+    var pct = ks / kQuestions.length;
+    var msg;
+    if (pct >= .9) msg = '🏆 Expert absoluto! Você domina a política brasileira.';
+    else if (pct >= .7) msg = '👏 Ótimo! Você conhece bem o cenário político.';
+    else if (pct >= .5) msg = '📚 Razoável. Explore as seções para aprender mais.';
+    else if (pct >= .3) msg = '😅 Precisa estudar! Veja projetos, leis e economia.';
+    else msg = '🤔 Hora de aprender. Este app é para você!';
+    document.getElementById('kmsg').textContent = msg;
+    var bd = document.getElementById('kbreakdown');
+    var html = '<h4>Resultado por categoria</h4>';
+    var catNames = {social:'Social',economia:'Economia',trabalho:'Trabalho',renda:'Renda',agro:'Agro',ambiente:'Ambiente',seguranca:'Segurança',politica:'Política'};
+    for (var cat in kCatScores) {
+      var s = kCatScores[cat];
+      html += '<div class="k-cat-row"><span>' + (catNames[cat]||cat) + '</span><span style="font-weight:800;color:' + (s.c/s.t >= .6 ? '#06d6a0' : '#e63946') + '">' + s.c + '/' + s.t + '</span></div>';
+    }
+    bd.innerHTML = html;
+    window.scrollTo(0, 0);
+  }
+}
+function resetKonw() {
+  ki = 0; ks = 0; ka = false; kCatScores = {};
+  document.getElementById('kconfig').style.display = 'block';
+  document.getElementById('kshell').style.display = 'none';
+  document.getElementById('kresult').className = 'kresult';
+}
+
+// ══════════════════════════════════════════════════════════════════
+// CONTENT TABS
+// ══════════════════════════════════════════════════════════════════
+function showCTab(id, btn) {
+  var tabs = btn.parentElement.querySelectorAll('.ctab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('act');
+  btn.classList.add('act');
+  var panes = ['espectro','partidos','projetos','propostas','agro'];
+  for (var i = 0; i < panes.length; i++) {
+    var el = document.getElementById('ct-' + panes[i]);
+    if (el) el.className = 'ctpane' + (panes[i] === id ? ' show' : '');
+  }
+}
+function showAgroTab(id, btn) {
+  var tabs = btn.parentElement.querySelectorAll('.ctab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('act');
+  btn.classList.add('act');
+  var panes = ['visao','dados','leis'];
+  for (var i = 0; i < panes.length; i++) {
+    var el = document.getElementById('at-' + panes[i]);
+    if (el) el.className = 'ctpane' + (panes[i] === id ? ' show' : '');
+  }
+}
+function showLTab(id, btn) {
+  var tabs = btn.parentElement.querySelectorAll('.ctab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('act');
+  btn.classList.add('act');
+  var panes = ['trabalhista','social','economica','ambiental','seguranca'];
+  for (var i = 0; i < panes.length; i++) {
+    var el = document.getElementById('lt-' + panes[i]);
+    if (el) el.className = 'ctpane' + (panes[i] === id ? ' show' : '');
+  }
+}
+function showEcoTab(id, btn) {
+  var tabs = btn.parentElement.querySelectorAll('.ctab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('act');
+  btn.classList.add('act');
+  var panes = ['pib','emprego','renda','salmin','inflacao'];
+  for (var i = 0; i < panes.length; i++) {
+    var el = document.getElementById('et-' + panes[i]);
+    if (el) el.className = 'ctpane' + (panes[i] === id ? ' show' : '');
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════
+// PARTIDOS
+// ══════════════════════════════════════════════════════════════════
+function renderPartidos(f) {
+  var g = document.getElementById('pgrid'); g.innerHTML = '';
+  for (var i = 0; i < PARTIDOS.length; i++) {
+    var p = PARTIDOS[i];
+    if (f !== 'all' && p.e !== f) continue;
+    var c = document.createElement('div');
+    c.className = 'pcard p' + p.e[0];
+    c.innerHTML = '<div class="psigla">' + p.s + '</div><div class="pnome">' + p.n + '</div><span class="pesp">' + p.el + '</span>';
+    (function(pp) {
+      c.onclick = function() { mOpen(pp.s + ' — ' + pp.n, '<p>' + pp.dc + '</p><br><strong style="color:#ffd166;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase">Destaques</strong><ul>' + pp.ds.map(function(d){return '<li>'+d+'</li>';}).join('') + '</ul>'); };
+    })(p);
+    g.appendChild(c);
+  }
+}
+function filtP(e, btn) {
+  var all = document.querySelectorAll('.pft');
+  for (var i = 0; i < all.length; i++) all[i].className = 'pft';
+  btn.className = 'pft a' + e[0];
+  renderPartidos(e);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// PROJETOS
+// ══════════════════════════════════════════════════════════════════
+function renderProjetos() {
+  var esps = ['esq','centro','dir'];
+  for (var j = 0; j < esps.length; j++) {
+    var esp = esps[j];
+    var pane = document.getElementById('pp-' + esp);
+    pane.innerHTML = '';
+    var list = PROJETOS[esp];
+    for (var i = 0; i < list.length; i++) {
+      var p = list[i];
+      var card = document.createElement('div');
+      card.className = 'prjcard';
+      card.innerHTML = '<div class="prjtit">' + p.t + '</div><div class="prjdesc">' + p.d + '</div><span class="prjst ' + p.s + '">' + p.sl + '</span>';
+      pane.appendChild(card);
+    }
+  }
+}
+function showPT(esp) {
+  var esps = ['esq','centro','dir'];
+  for (var i = 0; i < esps.length; i++) {
+    document.getElementById('pp-' + esps[i]).className = 'ppane pp' + esps[i][0];
+    document.getElementById('pt-' + esps[i]).className = 'ptab-btn';
+  }
+  document.getElementById('pp-' + esp).className = 'ppane pp' + esp[0] + ' show';
+  document.getElementById('pt-' + esp).className = 'ptab-btn t' + esp[0];
+}
+
+// ══════════════════════════════════════════════════════════════════
+// ELEIÇÕES
+// ══════════════════════════════════════════════════════════════════
+function renderEleicoes() {
+  var tl = document.getElementById('etl');
+  tl.innerHTML = '';
+  for (var i = 0; i < ELEICOES.length; i++) {
+    var e = ELEICOES[i];
+    var item = document.createElement('div');
+    item.className = 'eitem';
+    var statsHtml = '';
+    for (var j = 0; j < e.stats.length; j++) {
+      statsHtml += '<div class="estat-item"><div class="estat-val">' + e.stats[j].v + '</div><div class="estat-lbl">' + e.stats[j].l + '</div></div>';
+    }
+    item.innerHTML = '<div class="edot" style="background:' + e.c + '"></div>' +
+      '<div class="ecard">' +
+      '<div class="etop"><div class="eano">' + e.a + '</div><div class="etit">' + e.t + '</div></div>' +
+      '<div class="edesc">' + e.desc + '</div>' +
+      '<div class="estat">' + statsHtml + '</div>' +
+      '<span class="etag" style="background:' + e.c + '22;color:' + e.c + '">' + e.v + '</span>' +
+      '</div>';
+    var ee = e;
+    item.onclick = (function(ev) {
+      return function() {
+        var dl = '<div class="m-stat-grid">' + ev.stats.map(function(s){return '<div class="m-stat"><div class="m-stat-val">'+s.v+'</div><div class="m-stat-lbl">'+s.l+'</div></div>';}).join('') + '</div>' +
+          '<p>' + ev.desc + '</p><br><strong style="color:#ffd166;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase">Destaques do período</strong><ul>' + ev.destaques.map(function(d){return '<li>'+d+'</li>';}).join('') + '</ul>';
+        mOpen(ev.a + ' — ' + ev.t, dl);
+      };
+    })(ee);
+    tl.appendChild(item);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════
+// LEIS
+// ══════════════════════════════════════════════════════════════════
+function renderLeis() {
+  var cats = ['trabalhista','social','economica','ambiental','seguranca'];
+  for (var j = 0; j < cats.length; j++) {
+    var cat = cats[j];
+    var container = document.getElementById('lt-' + cat);
+    if (!container) continue;
+    container.innerHTML = '';
+    var list = LEIS[cat] || [];
+    for (var i = 0; i < list.length; i++) {
+      var l = list[i];
+      var item = document.createElement('div');
+      item.className = 'lei-item';
+      item.innerHTML = '<div class="lei-top"><div><div class="lei-num">' + l.n + '</div><div class="lei-titulo">' + l.t + '</div></div><span class="lei-badge ' + l.b + '">' + l.e + '</span></div><div class="lei-desc">' + l.desc + '</div>';
+      item.onclick = function() { toggleLeiEl(this); };
+      container.appendChild(item);
+    }
+  }
+}
+function toggleLeiEl(el) {
+  var desc = el.querySelector('.lei-desc');
+  desc.classList.toggle('show');
+}
+function toggleLei(el) { toggleLeiEl(el); }
+
+// ══════════════════════════════════════════════════════════════════
+// ECONOMIA
+// ══════════════════════════════════════════════════════════════════
+function renderEconomia() {
+  var tabs = ['pib','emprego','renda','salmin','inflacao'];
+  var titles = {pib:'Crescimento do PIB',emprego:'Taxa de Desemprego',renda:'Renda e Salário',salmin:'Salário Mínimo',inflacao:'Inflação (IPCA)'};
+  var cols = {pib:['Governo','PIB','Observações'],emprego:['Governo','Desemprego','Observações'],renda:['Governo','Ganho real','Observações'],salmin:['Governo','Valor','Observações'],inflacao:['Governo','Inflação','Observações']};
+  var valKey = {pib:'pib',emprego:'val',renda:'val',salmin:'val',inflacao:'val'};
+  for (var t = 0; t < tabs.length; t++) {
+    var tab = tabs[t];
+    var container = document.getElementById('et-' + tab);
+    if (!container) continue;
+    var list = ECO_DADOS[tab] || [];
+    var html = '<div class="eco-grid">';
+    for (var i = 0; i < list.length; i++) {
+      var item = list[i];
+      var colorClass = item.e === 'esq' ? '#e63946' : item.e === 'dir' ? '#48cae4' : '#f4a261';
+      html += '<div class="eco-card">' +
+        '<div class="eco-period" style="border-left:3px solid ' + colorClass + ';padding-left:.5rem">' + item.gov + '</div>' +
+        '<div class="eco-stat"><div class="eco-stat-val" style="color:' + colorClass + '">' + (item[valKey[tab]] || item.pib || item.val) + '</div><div class="eco-stat-lbl">' + (titles[tab] || '') + '</div></div>' +
+        '<div style="font-size:.72rem;color:#7878a8;margin-top:.4rem;line-height:1.5">' + item.obs + '</div>' +
+        '</div>';
+    }
+    html += '</div>';
+    container.innerHTML = html;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════════════════════════════
+function mOpen(t, b) {
+  document.getElementById('mtit').textContent = t;
+  document.getElementById('mbdy').innerHTML = b;
+  document.getElementById('modal').className = 'modal show';
+}
+function mClose() { document.getElementById('modal').className = 'modal'; }
+
+// ══════════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════════
+initQConfig();
+initKConfig();
+renderPartidos('all');
+renderProjetos();
+renderEleicoes();
+renderLeis();
+renderEconomia();
+</script>
+</body>
+</html>
