@@ -80,6 +80,16 @@ h3{font-size:1.05rem;font-weight:800;margin-bottom:.5rem}
 .cat-btn{padding:.6rem .8rem;border-radius:10px;border:2px solid var(--brd);background:var(--bg2);cursor:pointer;font-size:.78rem;font-weight:700;color:var(--muted);transition:all .16s;text-align:left;display:flex;align-items:center;gap:.5rem;-webkit-tap-highlight-color:transparent}
 .cat-btn:active{transform:scale(.96)}
 .cat-btn.on{border-color:var(--y);color:var(--txt);background:var(--yl)}
+.cat-btn .chk{width:20px;height:20px;border-radius:6px;border:2px solid var(--brd2);flex-shrink:0;margin-left:auto;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:900;color:#080810;background:transparent}
+.cat-btn.on .chk{background:var(--y);border-color:var(--y)}
+.cat-btn.on .chk::after{content:'✓'}
+.cat-btn:not(.on){opacity:.65}
+.cat-tools{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap;margin-bottom:.6rem}
+.cat-count{font-size:.76rem;font-weight:700;color:var(--muted)}
+.cat-count b{color:var(--y)}
+.link-btn{background:transparent;border:none;color:var(--b2);font-weight:800;font-size:.74rem;cursor:pointer;padding:.2rem .4rem;text-decoration:underline}
+.resumo{font-size:.8rem;color:var(--txt);background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:.7rem .9rem;margin-bottom:1rem;line-height:1.5}
+.resumo b{color:var(--y)}
 .cat-btn .cl{font-size:.78rem;font-weight:800;color:var(--txt)}
 .cat-btn .cd{font-size:.64rem;color:var(--muted);font-weight:600}
 .cat-icon{font-size:1.15rem;flex-shrink:0}
@@ -409,6 +419,8 @@ footer a{color:var(--b2);font-weight:700;text-decoration:none}
 
   <div class="cardbox" id="qconfig">
     <div class="config-title">1. Escolha os temas</div>
+    <div class="cat-tools"><span class="cat-count" id="qcount"></span><span><button class="link-btn" onclick="qSetAll(true)">Marcar todos</button><button class="link-btn" onclick="qSetAll(false)">Desmarcar todos</button></span></div>
+    <p style="font-size:.74rem;color:var(--muted);margin-bottom:.6rem">Toque em um tema para marcar ou desmarcar. Os marcados ficam com o quadradinho amarelo.</p>
     <div class="cats-grid" id="qcats-grid"></div>
     <div class="config-title">2. Quantas frases?</div>
     <div class="qty-row">
@@ -418,7 +430,8 @@ footer a{color:var(--b2);font-weight:700;text-decoration:none}
       <button class="qty-btn" data-q="0" onclick="setQty(this)">Todas</button>
     </div>
     <div class="hint">💡 Não existe resposta certa ou errada. Responda o que você pensa de verdade. Se não tiver opinião sobre um tema, escolha "Neutro" sem culpa. O app sorteia frases equilibradas: metade delas expressa ideias mais ligadas à esquerda e metade, à direita.</div>
-    <button class="btn br" onclick="startQuiz()">Iniciar quiz →</button>
+    <div class="resumo" id="qresumo"></div>
+    <button class="btn br" id="qstartbtn" onclick="startQuiz()">Iniciar quiz →</button>
   </div>
 
   <div class="qshell" id="qshell" style="display:none">
@@ -504,6 +517,7 @@ footer a{color:var(--b2);font-weight:700;text-decoration:none}
   </div>
   <div class="cardbox" id="kconfig">
     <div class="config-title">1. Categorias</div>
+    <div class="cat-tools"><span class="cat-count" id="kcount"></span><span><button class="link-btn" onclick="kSetAll(true)">Marcar todas</button><button class="link-btn" onclick="kSetAll(false)">Desmarcar todas</button></span></div>
     <div class="cats-grid" id="kcats-grid"></div>
     <div class="config-title">2. Dificuldade</div>
     <div class="qty-row">
@@ -518,7 +532,8 @@ footer a{color:var(--b2);font-weight:700;text-decoration:none}
       <button class="qty-btn" data-q="20" onclick="setKQty(this)">20</button>
       <button class="qty-btn" data-q="0" onclick="setKQty(this)">Todas</button>
     </div>
-    <button class="btn by" onclick="startKonw()">Iniciar →</button>
+    <div class="resumo" id="kresumo"></div>
+    <button class="btn by" id="kstartbtn" onclick="startKonw()">Iniciar →</button>
   </div>
 
   <div class="kshell" id="kshell" style="display:none">
@@ -1047,20 +1062,39 @@ function initQConfig() {
     var btn = document.createElement('button');
     btn.className = 'cat-btn on';
     btn.setAttribute('data-cat', c.id);
-    btn.innerHTML = '<span class="cat-icon">' + c.icon + '</span><span><div class="cl">' + c.label + '</div><div class="cd">' + c.desc + '</div></span>';
+    btn.innerHTML = '<span class="cat-icon">' + c.icon + '</span><span><div class="cl">' + c.label + '</div><div class="cd">' + c.desc + '</div></span><span class="chk"></span>';
     btn.onclick = function () {
       var cat = this.getAttribute('data-cat');
       qSelectedCats[cat] = !qSelectedCats[cat];
       this.classList.toggle('on', qSelectedCats[cat]);
+      qUpdateResumo();
     };
     g.appendChild(btn);
   }
+  qUpdateResumo();
+}
+function qSetAll(v) {
+  var bs = document.querySelectorAll('#qcats-grid .cat-btn');
+  for (var i = 0; i < bs.length; i++) { qSelectedCats[bs[i].getAttribute('data-cat')] = v; bs[i].classList.toggle('on', v); }
+  qUpdateResumo();
+}
+function qUpdateResumo() {
+  var names = [], pool = 0;
+  for (var i = 0; i < QCATS.length; i++) if (qSelectedCats[QCATS[i].id]) names.push(QCATS[i].label);
+  for (var j = 0; j < QUIZ_PERGS.length; j++) if (qSelectedCats[QUIZ_PERGS[j].cat]) pool++;
+  document.getElementById('qcount').innerHTML = '<b>' + names.length + '</b> de ' + QCATS.length + ' temas marcados';
+  var n = qQty > 0 ? Math.min(qQty, pool) : pool;
+  if (n % 2 === 1 && n > 2) n--;
+  var r = document.getElementById('qresumo'), b = document.getElementById('qstartbtn');
+  if (names.length === 0) { r.innerHTML = '⚠️ Nenhum tema marcado. Marque pelo menos um para começar.'; b.disabled = true; }
+  else { r.innerHTML = 'Você vai responder <b>' + n + ' frases</b> sobre: <b>' + names.join(', ') + '</b>.'; b.disabled = false; }
 }
 function setQty(btn) {
   var all = document.querySelectorAll('#qconfig .qty-btn[data-q]');
   for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
   btn.classList.add('on');
   qQty = parseInt(btn.getAttribute('data-q'), 10);
+  qUpdateResumo();
 }
 
 // Sorteio equilibrado: mesma quantidade de frases de esquerda e de direita,
@@ -1488,26 +1522,46 @@ function initKConfig() {
     var btn = document.createElement('button');
     btn.className = 'cat-btn on';
     btn.setAttribute('data-cat', id);
-    btn.innerHTML = '<span class="cat-icon">' + (co ? co.icon : '') + '</span><span class="cl">' + (co ? co.label : id) + '</span>';
+    btn.innerHTML = '<span class="cat-icon">' + (co ? co.icon : '') + '</span><span class="cl">' + (co ? co.label : id) + '</span><span class="chk"></span>';
     btn.onclick = function () {
       var cat = this.getAttribute('data-cat');
       kSelectedCats[cat] = !kSelectedCats[cat];
       this.classList.toggle('on', kSelectedCats[cat]);
+      kUpdateResumo();
     };
     g.appendChild(btn);
   }
+  kUpdateResumo();
+}
+function kSetAll(v) {
+  var bs = document.querySelectorAll('#kcats-grid .cat-btn');
+  for (var i = 0; i < bs.length; i++) { kSelectedCats[bs[i].getAttribute('data-cat')] = v; bs[i].classList.toggle('on', v); }
+  kUpdateResumo();
+}
+function kUpdateResumo() {
+  var names = [], pool = 0, total = 0;
+  for (var id in kSelectedCats) { total++; if (kSelectedCats[id]) { var co = catObj(id); names.push(co ? co.label : id); } }
+  for (var j = 0; j < KONW_PERGS.length; j++) { var p = KONW_PERGS[j]; if (kSelectedCats[p.cat] && (kDiff === 'all' || p.diff === kDiff)) pool++; }
+  document.getElementById('kcount').innerHTML = '<b>' + names.length + '</b> de ' + total + ' categorias marcadas';
+  var n = kQty > 0 ? Math.min(kQty, pool) : pool;
+  var r = document.getElementById('kresumo'), b = document.getElementById('kstartbtn');
+  if (names.length === 0) { r.innerHTML = '⚠️ Nenhuma categoria marcada.'; b.disabled = true; }
+  else if (pool === 0) { r.innerHTML = '⚠️ Não há questões com essa combinação de categoria e dificuldade. Mude a dificuldade.'; b.disabled = true; }
+  else { r.innerHTML = 'Você vai responder <b>' + n + ' questões</b> sobre: <b>' + names.join(', ') + '</b>.'; b.disabled = false; }
 }
 function setKDiff(btn) {
   var all = document.querySelectorAll('[data-d]');
   for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
   btn.classList.add('on');
   kDiff = btn.getAttribute('data-d');
+  kUpdateResumo();
 }
 function setKQty(btn) {
   var all = document.querySelectorAll('#kconfig .qty-btn[data-q]');
   for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
   btn.classList.add('on');
   kQty = parseInt(btn.getAttribute('data-q'), 10);
+  kUpdateResumo();
 }
 function startKonw() {
   var pool = [];
